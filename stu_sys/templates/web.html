@@ -1,0 +1,20 @@
+<!-- 载入静态文件 -->
+{% load static %}
+
+<head>
+    <!-- 引入jQuery库-->  
+    <link rel="stylesheet" href="https://cdn.acwing.com/static/jquery-ui-dist/jquery-ui.min.css">
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <!-- 引入自己的css和js文件-->
+    <link rel="stylesheet" href="{% static 'css/stu_sys.css' %}"></link>
+    <script src="{% static 'js/dist/stu_sys.js' %}"></script>
+</head>
+
+<body style="margin: 0">
+    <div id="my_design_12345678"></div>
+    <script>
+        $(document).ready(function(){
+            let stu_sys = new StuSys("my_design_12345678");
+        });
+    </script>
+</body>
