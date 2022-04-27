@@ -79,6 +79,13 @@
     margin-bottom: 2vh;
 }
 
+.stu-sys-account-identity {
+    display: block;
+    height: 3vh;
+    text-align: center;
+    color: white;
+}
+
 .stu-sys-account-username {
     display: block;
     height: 7vh;
@@ -143,3 +150,173 @@
 }
 
 
+.stu-sys-admin {
+    width: 100%;
+    height: 100%;
+}
+
+.stu-sys-teacher {
+    width: 100%;
+    height: 100%
+}
+
+.stu-sys-student {
+    width: 100%;
+    height: 100%
+}
+
+.stu-sys-head {
+    background-color: #7DB9DE;
+    width: 100%;
+    height: 8%;
+}
+
+.stu-sys-head-logo {
+    height: 100%;
+    width: 30%;
+    background-image: url("/static/image/admin/logo.png");
+    background-repeat: no-repeat;
+    background-size: 44% 96%;
+    float: left;
+} 
+.stu-sys-head-welcome {
+    position: relative;
+    right: 9vw;
+    top: 2.5vh;
+    font-family: SimHei;
+    font-weight: bold;
+    float: right;
+}
+
+.stu-sys-content {
+    width: 100%;
+    height: 87.26%;
+}
+
+.stu-sys-left {
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+
+.stu-sys-right {
+    width: 80%;
+    height: 100%;
+    float: left;
+    background-color: #F7F7F7;
+}
+
+.stu-sys-right-admin-notification {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%
+}
+
+.stu-sys-right-admin-notification-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    top: 10%;
+}
+
+.stu-sys-right-admin-notification-addition {
+    font-size: 2vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-admin-notification-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-foot {
+    width: 100%;
+    height: 4.74%;
+    background-color: #7DB9DE;
+    clear: both;
+}
+
+#stu-sys-foot-date {
+    float: right;
+    text-size: 1vh;
+    line-height: 200%;
+    position: relative;
+    right: 6%;
+    font-size: 2.5vh;
+}
+
+
+.stu-sys-navigation {
+    width: 13vw;
+    position: relative;
+    top: 15%;
+    left: 19%;
+}
+
+.stu-sys-navigation-item {
+    color: white;
+    height: 3vh;
+    width: 10vw;
+    font-size: 3vh;
+    font-style: italic;
+    padding: 2vh;
+    text-align: center;
+    line-height: 30px;
+    background-color: rgba(125,185,222,0.6);
+    border-radius: 10px;
+    letter-spacing: 0.5vw;
+    cursor: pointer;
+    margin-bottom: 15%;
+}
+
+.stu-sys-navigation-item:hover {
+    transform: scale(1.2);
+    transition: 100ms;
+}
+
+.stu-sys-right-graphfield {
+    height: 20vh;
+    width: 79.2vw;
+    background-color: #FFFFFF;
+    position: relative;
+    left: 0.5%;
+    top: 1%;
+}
+
+.stu-sys-right-graphfield-graph {
+    width: 80%;
+    height: 12vh;
+    background-image: url("/static/image/admin/textgraph.png");
+    background-repeat: no-repeat;
+    position: relative;
+    left: 20%;
+    top: 20%;
+}
+
+.table-notification-style {
+    width: 100% !important
+}
+
+.table-notification-style-th1 {
+    width: 70% !important;
+    text-align: left;
+}
+
+.table-notification-style-th2 {
+    width: 30% !important;
+    text-align: left;
+}
+
+.admin-notification-add {
+    margin: 1% 2%;
+}
+
+.admin-notification-delete {
+    margin: 1% 1%;
+}

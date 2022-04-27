@@ -8,6 +8,7 @@ def register(request):
     username = data.get("username", "").strip()     # strip():去掉前后空格
     password = data.get("password", "").strip()
     password_confirm = data.get("password_confirm", "").strip()
+    identity = data.get("identity")
     if not username or not password:
         return JsonResponse({
             'result': "用户名和密码不能为空",
@@ -24,7 +25,7 @@ def register(request):
    ## user.set_password(password)
    ## user.save()
     user = User.objects.create_user(username=username, password=password)
-    Tsu_user.objects.create(user=user, identity="")
+    Tsu_user.objects.create(user=user, identity=identity)
     login(request, user)
     return JsonResponse({
         'result': "success"

@@ -59,6 +59,11 @@ class StuSysAccount{
                     <input type="password" placeholder="确认密码">
                 </div>
             </div>
+            <div class="stu-sys-account-identity">
+                <input type="radio" name="identity" value="管理员">管理员
+                <input type="radio" name="identity" value="老师">老师
+                <input type="radio" name="identity" value="学生">学生
+            </div>
             <div class="stu-sys-account-submit">
                 <div class="stu-sys-account-item">
                     <button>注册</button>
@@ -152,14 +157,14 @@ class StuSysAccount{
         });
     }
 
-    register_on_remote() {
+    register_on_remote() {       // 在远程服务器上注册
         let outer = this;
         let username = this.$register_username.val();
         let password = this.$register_password.val();
         let password_confirm = this.$register_password_confirm.val();
+        let identity = $("input[name='identity']:checked").val();
         this.$register_error_messages.empty();
-        console.log(password);
-        console.log(password_confirm);
+        console.log(identity);
         $.ajax({
             url: "http://43.138.22.107:8080/stu_sys/account/register/",
             type: "GET",
@@ -167,6 +172,7 @@ class StuSysAccount{
                 username: username,
                 password: password,
                 password_confirm: password_confirm,
+                identity: identity,
             },
             success: function(resp) {
                 console.log(resp);
@@ -198,13 +204,15 @@ class StuSysAccount{
             success: function(resp) {
                 console.log(resp);
                 if (resp.result === "success") {
-                    outer.hide();
-                    if(resp.identity === "admin"){
-                        // 进入管理员页面
-                    }else if(resp.identity == "teacher"){
-                        // 进入老师页面
+                    if(resp.identity === "管理员"){
+                        outer.hide();
+                        outer.root.admin.show();
+                    }else if(resp.identity == "老师"){
+                        outer.hide();
+                        outer.root.teacher.show();
                     }else{
-                        // 进入学生页面
+                        outer.hide();
+                        outer.root.student.show();
                     }
                 }else {
                     outer.login();
