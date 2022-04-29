@@ -2,11 +2,15 @@ from django.http import JsonResponse
 from stu_sys.models.notification import Notification
 
 def get_notification(request):
-    objects = Notification.objects.all();
-    data = dict();
+    objects = Notification.objects.all()
+    list = []
     for obj in objects:
-        title = str(obj.title)
-        create_time = str(obj.create_time)
-        data.update({title: create_time})
-
-    return JsonResponse(data)
+        obj_info = {
+            'title': obj.title,
+            'create_time': str(obj.create_time),
+            'detail': obj.detail,
+        }
+        list.append(obj_info)
+    obj_dic = {}
+    obj_dic['data'] = list
+    return JsonResponse(obj_dic)

@@ -43,9 +43,8 @@ class StuSysAdmin{
                                 <th class="table-notification-style-th2">发布时间</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
                     </table>
+                    <input type="button" class="admin-notification-detail" value="查看">
                     <input type="button" class="admin-notification-add" value="添加">
                     <input type="button" class="admin-notification-delete" value="删除">
                 </div>
@@ -69,30 +68,39 @@ class StuSysAdmin{
 
         this.$admin_notification = this.$admin.find(".stu-sys-navigation-item-notification");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
+        this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
 
         this.start();
     }
 
     start(){
-        var data = [
-            [
-                "第一条通知",
-                "2022-4-27",
-            ],
-            [
-                "第二条通知",
-                "2022-4-27",
-            ]
-        ];
 
         $(document).ready(function(){
             $('#table-notification').DataTable({
-                data: data,
-                select: true,
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                "columns": [
+                    {"data": "title"},
+                    {"data": "create_time"},
+                ],
+                language:{
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+
             });
         });
-
 
         this.get_foot_date();
         this.get_head_name();
@@ -112,14 +120,64 @@ class StuSysAdmin{
             outer.$stu_sys_right_admin_notification.show();
         });
 
-        this.$admin_notification_add.click(function(){
-            outer.add_notification_to_remote();
+        this.$admin_notification_detail.click(function(){
+            outer.check_notification_detail();
+        });
+
+        this.$admin_notification_delete.click(function(){
+            outer.delete_notification_to_remote();
         });
     }
 
-    add_notification_to_remote(){
+    check_notification_detail(){
+        let outer = this;
         let table = $('#table-notification').DataTable();
-        console.log(table.rows({selected: true}).data());
+        let title = table.rows({selected: true}).data()[0]['title'];
+        console.log(title);
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
+            type: "GET",
+            data: {
+                title: title
+            },
+            success: function openWindow(resp) {
+                console.log(resp);
+                new MyLayer({
+                top:"10%",
+                left:"10%",
+                width:"80%",
+                height:"80%",
+                title: resp.title,
+                content: resp.result
+              }).openLayer();
+            }
+        });
+
+    }
+
+    delete_notification_to_remote(){
+        let outer = this;
+        let table = $('#table-notification').DataTable();
+        let title = table.rows({selected: true}).data()[0][0];
+
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/notification/delete_notification/",
+            type: "GET",
+            data: {
+                title: title,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    confirm("删除成功！");
+                    location.reload();
+                    outer.$stu_sys_right_graphfield.hide();
+                    outer.$stu_sys_right_admin_notification.show();
+                }else {
+                    confirm("删除失败！");
+                }
+            }
+        });
     }
 
     get_head_name(){

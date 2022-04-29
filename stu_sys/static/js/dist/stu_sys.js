@@ -275,9 +275,8 @@ class StuSysAdmin{
                                 <th class="table-notification-style-th2">发布时间</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
                     </table>
+                    <input type="button" class="admin-notification-detail" value="查看">
                     <input type="button" class="admin-notification-add" value="添加">
                     <input type="button" class="admin-notification-delete" value="删除">
                 </div>
@@ -301,30 +300,39 @@ class StuSysAdmin{
 
         this.$admin_notification = this.$admin.find(".stu-sys-navigation-item-notification");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
+        this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
 
         this.start();
     }
 
     start(){
-        var data = [
-            [
-                "第一条通知",
-                "2022-4-27",
-            ],
-            [
-                "第二条通知",
-                "2022-4-27",
-            ]
-        ];
 
         $(document).ready(function(){
             $('#table-notification').DataTable({
-                data: data,
-                select: true,
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                "columns": [
+                    {"data": "title"},
+                    {"data": "create_time"},
+                ],
+                language:{
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+
             });
         });
-
 
         this.get_foot_date();
         this.get_head_name();
@@ -344,14 +352,64 @@ class StuSysAdmin{
             outer.$stu_sys_right_admin_notification.show();
         });
 
-        this.$admin_notification_add.click(function(){
-            outer.add_notification_to_remote();
+        this.$admin_notification_detail.click(function(){
+            outer.check_notification_detail();
+        });
+
+        this.$admin_notification_delete.click(function(){
+            outer.delete_notification_to_remote();
         });
     }
 
-    add_notification_to_remote(){
+    check_notification_detail(){
+        let outer = this;
         let table = $('#table-notification').DataTable();
-        console.log(table.rows({selected: true}).data());
+        let title = table.rows({selected: true}).data()[0]['title'];
+        console.log(title);
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
+            type: "GET",
+            data: {
+                title: title
+            },
+            success: function openWindow(resp) {
+                console.log(resp);
+                new MyLayer({
+                top:"10%",
+                left:"10%",
+                width:"80%",
+                height:"80%",
+                title: resp.title,
+                content: resp.result
+              }).openLayer();
+            }
+        });
+
+    }
+
+    delete_notification_to_remote(){
+        let outer = this;
+        let table = $('#table-notification').DataTable();
+        let title = table.rows({selected: true}).data()[0][0];
+
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/notification/delete_notification/",
+            type: "GET",
+            data: {
+                title: title,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    confirm("删除成功！");
+                    location.reload();
+                    outer.$stu_sys_right_graphfield.hide();
+                    outer.$stu_sys_right_admin_notification.show();
+                }else {
+                    confirm("删除失败！");
+                }
+            }
+        });
     }
 
     get_head_name(){
@@ -370,6 +428,79 @@ class StuSysAdmin{
         this.$admin.hide();
     }
 }
+/**
+ * Created by zhuwenqi on 2017/6/16.
+ */
+/**
+ * @param options 弹窗基本配置信息
+ * @constructor 构造方法
+ */
+function MyLayer(options) {
+  this.options = options ;
+}
+/**
+ * 打开弹窗
+ */
+MyLayer.prototype.openLayer = function () {
+  var background_layer = document.createElement("div");
+  background_layer.style.display = "none";
+  background_layer.style.position = "absolute";
+  background_layer.style.top = "0px";
+  background_layer.style.left = "0px";
+  background_layer.style.width = "100%";
+  background_layer.style.height = "100%";
+  background_layer.style.backgroundColor = "gray";
+  background_layer.style.zIndex = "1001";
+  background_layer.style.opacity = "0.8" ;
+  var open_layer = document.createElement("div");
+  open_layer.style.display = "none";
+  open_layer.style.position = "absolute";
+  open_layer.style.top = this.options.top === undefined ? "10%" : this.options.top;
+  open_layer.style.left = this.options.left === undefined ? "10%" :this.options.left;
+  open_layer.style.width = this.options.width === undefined ? "80%" : this.options.width;
+  open_layer.style.height = this.options.height === undefined ? "80%" : this.options.height;
+  open_layer.style.border = "1px solid lightblue";
+  open_layer.style.borderRadius = "15px" ;
+  open_layer.style.boxShadow = "4px 4px 10px #171414";
+  open_layer.style.backgroundColor = "white";
+  open_layer.style.zIndex = "1002";
+  open_layer.style.overflow = "auto";
+  var div_toolBar = document.createElement("div");
+  div_toolBar.style.textAlign = "right";
+  div_toolBar.style.paddingTop = "10px" ;
+  div_toolBar.style.backgroundColor = "aliceblue";
+  div_toolBar.style.height = "40px";
+  var span_title = document.createElement("span");
+  span_title.style.fontSize = "18px";
+  span_title.style.color = "blue" ;
+  span_title.style.float = "left";
+  span_title.style.marginLeft = "20px";
+  var span_title_content = document.createTextNode(this.options.title === undefined ? "" : this.options.title);
+  span_title.appendChild(span_title_content);
+  div_toolBar.appendChild(span_title);
+  var span_close = document.createElement("span");
+  span_close.style.fontSize = "16px";
+  span_close.style.color = "blue" ;
+  span_close.style.cursor = "pointer";
+  span_close.style.marginRight = "20px";
+  span_close.onclick = function () {
+    open_layer.style.display = "none";
+    background_layer.style.display = "none";
+  };
+  var span_close_content = document.createTextNode("关闭");
+  span_close.appendChild(span_close_content);
+  div_toolBar.appendChild(span_close);
+  open_layer.appendChild(div_toolBar);
+  var div_content = document.createElement("div");
+  div_content.style.textAlign = "center";
+  var content_area = document.createTextNode(this.options.content === undefined ? "" : this.options.content);
+  div_content.appendChild(content_area);
+  open_layer.appendChild(div_content);
+  document.body.appendChild(open_layer);
+  document.body.appendChild(background_layer);
+  open_layer.style.display = "block" ;
+  background_layer.style.display = "block";
+};
 class StuSysStudent{
     constructor(root){
         this.root = root;
