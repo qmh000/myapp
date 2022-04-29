@@ -23,7 +23,7 @@ class StuSysAdmin{
                 <div class="stu-sys-navigation-item">
                     课程管理
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item stu-sys-navigation-item-logout">
                     退出登录
                 </div>
             </div>
@@ -49,6 +49,19 @@ class StuSysAdmin{
                     <input type="button" class="admin-notification-delete" value="删除">
                 </div>
             </div>
+            <div class="stu-sys-right-admin-notification-form">
+                <form>
+                    <h3>通知公告</h3>
+                    <div class="stu-sys-right-admin-notification-form-item">
+                        <label>标题:</label>
+                        <input type="text" placeholder="请输入通知标题"></div>
+                    <div class="stu-sys-right-admin-notification-form-item">
+                        <label>通知内容:</label>
+                        <textarea rows=6%></textarea>
+                    </div>
+                    <span class="stu-sys-right-admin-notification-form-button">提交</span>
+                </form>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -58,10 +71,10 @@ class StuSysAdmin{
 `)
 
         this.$stu_sys_right_graphfield = this.$admin.find(".stu-sys-right-graphfield");
-
         this.$stu_sys_right_admin_notification = this.$admin.find(".stu-sys-right-admin-notification");
         this.$stu_sys_right_admin_notification.hide();
         this.root.$stu_sys.append(this.$admin);
+        this.$navigation_item_logout = this.$admin.find(".stu-sys-navigation-item-logout");
 
         this.$head_welcome = this.$admin.find(".stu-sys-head-welcome");
         this.$foot_date = this.$admin.find(".stu-sys-foot-date");
@@ -70,8 +83,14 @@ class StuSysAdmin{
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
         this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
-
+        this.$stu_sys_right_admin_notification_form = this.$admin.find(".stu-sys-right-admin-notification-form");
+        this.$stu_sys_right_admin_notification_form.hide();
+        this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
+        this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
+        this.$notification_submit = this.$admin.find(".stu-sys-right-admin-notification-form-button");
+        this.hide();
         this.start();
+
     }
 
     start(){
@@ -110,6 +129,14 @@ class StuSysAdmin{
 
     add_listening_events(){
         this.add_listening_events_notification();
+        this.add_listening_events_logout();
+    }
+
+    add_listening_events_logout(){
+        let outer = this;
+        this.$navigation_item_logout.click(function(){
+            outer.root.account.logout_on_remote();
+        });
     }
 
     add_listening_events_notification(){
@@ -117,6 +144,7 @@ class StuSysAdmin{
 
         this.$admin_notification.click(function() {
             outer.$stu_sys_right_graphfield.hide();
+            outer.$stu_sys_right_admin_notification_form.hide();
             outer.$stu_sys_right_admin_notification.show();
         });
 
@@ -127,6 +155,41 @@ class StuSysAdmin{
         this.$admin_notification_delete.click(function(){
             outer.delete_notification_to_remote();
         });
+        this.$admin_notification_add.click(function(){
+            outer.notification_add_form();
+        });
+        this.$notification_submit.click(function(){
+            outer.add_notification_to_remote();
+        });
+    }
+
+    add_notification_to_remote() {
+        let outer = this;
+        let title = this.$notification_title.val();
+        let detail = this.$notification_detail.val();
+
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/notification/add_notification/",
+            type: "GET",
+            data: {
+                title: title,
+                detail: detail,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    confirm("添加成功!");
+                    location.reload();
+                }else {
+                    confirm(resp.result);
+                }
+            }
+        });
+    }
+
+    notification_add_form() {
+        this.$stu_sys_right_admin_notification.hide();
+        this.$stu_sys_right_admin_notification_form.show();
     }
 
     check_notification_detail(){
@@ -143,13 +206,13 @@ class StuSysAdmin{
             success: function openWindow(resp) {
                 console.log(resp);
                 new MyLayer({
-                top:"10%",
-                left:"10%",
-                width:"80%",
-                height:"80%",
-                title: resp.title,
-                content: resp.result
-              }).openLayer();
+                    top:"10%",
+                    left:"10%",
+                    width:"80%",
+                    height:"80%",
+                    title: resp.title,
+                    content: resp.result
+                }).openLayer();
             }
         });
 
@@ -158,7 +221,7 @@ class StuSysAdmin{
     delete_notification_to_remote(){
         let outer = this;
         let table = $('#table-notification').DataTable();
-        let title = table.rows({selected: true}).data()[0][0];
+        let title = table.rows({selected: true}).data()[0]['title'];
 
         $.ajax({
             url: "http://43.138.22.107:8080/stu_sys/notification/delete_notification/",
@@ -171,8 +234,6 @@ class StuSysAdmin{
                 if(resp.result === "success") {
                     confirm("删除成功！");
                     location.reload();
-                    outer.$stu_sys_right_graphfield.hide();
-                    outer.$stu_sys_right_admin_notification.show();
                 }else {
                     confirm("删除失败！");
                 }

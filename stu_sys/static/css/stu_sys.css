@@ -212,7 +212,7 @@
     background-color: #FFFFFF;
     position: relative;
     top: 1%;
-    left: 0.5%
+    left: 0.5%;
 }
 
 .stu-sys-right-admin-notification-title {
@@ -319,4 +319,65 @@
 
 .admin-notification-delete {
     margin: 1% 1%;
+}
+
+/*表单样式*/
+.stu-sys-right-admin-notification-form {
+    width: 40%;
+    height: 56%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+
+.stu-sys-right-admin-notification-form-item {
+    border: 0.1vh solid #aaa;
+    margin: 2% 0;
+    padding: 2% 2%;
+    border-radius: 10px;
+}
+
+.stu-sys-right-admin-notification-form-item label {
+    display: block;
+    text-align: left;
+    color: #000;
+    font-size: 1.5vh;
+}
+
+/*姓名 手机 邮箱 备注框样式*/
+.stu-sys-right-admin-notification-form-item input,
+.stu-sys-right-admin-notification-form-item textarea {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    margin-top: 1%;
+    font-size: 2vh;
+    color: #000;
+}
+
+/*备注框样式*/
+.stu-sys-right-admin-notification-form-item textarea{
+    max-height: 300px;
+}
+
+/*提交按钮样式*/
+.stu-sys-right-admin-notification-form-button {
+    display: block;
+    background-color: rgba(125,185,222,0.6);
+    padding: 2% 0;
+    color: #000;
+    cursor: pointer;
+    margin-top: 2%;
+    width: 100%;
+    border: 1px solid #aaa;
+    border-radius: 10px;
 }

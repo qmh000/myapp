@@ -185,6 +185,19 @@ class StuSysAccount{
         });
     }
 
+    logout_on_remote() {     // 在远程服务器上登出
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/account/logout/",
+            type: "GET",
+            success: function(resp) {
+                console.log(resp);
+                if (resp.result === "success") {
+                    location.reload();
+                }
+            }
+        });
+    }
+
     register() {   // 打开注册界面
         this.$login.hide();
         this.$register.show();
