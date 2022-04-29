@@ -242,7 +242,7 @@
     clear: both;
 }
 
-#stu-sys-foot-date {
+#stu-sys-admin-foot-date {
     float: right;
     text-size: 1vh;
     line-height: 200%;
@@ -251,6 +251,23 @@
     font-size: 2.5vh;
 }
 
+#stu-sys-teacher-foot-date {
+    float: right;
+    text-size: 1vh;
+    line-height: 200%;
+    position: relative;
+    right: 6%;
+    font-size: 2.5vh;
+}
+
+#stu-sys-student-foot-date {
+    float: right;
+    text-size: 1vh;
+    line-height: 200%;
+    position: relative;
+    right: 6%;
+    font-size: 2.5vh;
+}
 
 .stu-sys-navigation {
     width: 13vw;
@@ -338,23 +355,68 @@
     color: #000;
 }
 
-.stu-sys-right-admin-notification-form-item {
+.stu-sys-right-teacher-info-form {
+    width: 40%;
+    height: 56%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+
+.stu-sys-right-form-item {
     border: 0.1vh solid #aaa;
     margin: 2% 0;
     padding: 2% 2%;
     border-radius: 10px;
 }
 
-.stu-sys-right-admin-notification-form-item label {
+.stu-sys-right-form-item label {
     display: block;
     text-align: left;
     color: #000;
     font-size: 1.5vh;
 }
 
+.stu-sys-right-teacher-info-show {
+    width: 40%;
+    height: 56%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+
+}
+
+#teacher-info-form-show-name {
+   font-size: 3vh;
+}
+
+#teacher-info-form-show-dept {
+    font-size: 3vh;
+}
+
+.teacher-info-form-show-submit {
+    margin-top: 10vh;
+}
+
 /*姓名 手机 邮箱 备注框样式*/
-.stu-sys-right-admin-notification-form-item input,
-.stu-sys-right-admin-notification-form-item textarea {
+.stu-sys-right-form-item input,
+.stu-sys-right-form-item textarea {
     width: 100%;
     background: none;
     border: none;
@@ -365,12 +427,12 @@
 }
 
 /*备注框样式*/
-.stu-sys-right-admin-notification-form-item textarea{
+.stu-sys-right-form-item textarea{
     max-height: 300px;
 }
 
 /*提交按钮样式*/
-.stu-sys-right-admin-notification-form-button {
+.stu-sys-right-form-button {
     display: block;
     background-color: rgba(125,185,222,0.6);
     padding: 2% 0;

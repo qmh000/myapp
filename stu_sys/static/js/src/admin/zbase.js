@@ -52,20 +52,20 @@ class StuSysAdmin{
             <div class="stu-sys-right-admin-notification-form">
                 <form>
                     <h3>通知公告</h3>
-                    <div class="stu-sys-right-admin-notification-form-item">
+                    <div class="stu-sys-right-form-item">
                         <label>标题:</label>
                         <input type="text" placeholder="请输入通知标题"></div>
-                    <div class="stu-sys-right-admin-notification-form-item">
+                    <div class="stu-sys-right-form-item">
                         <label>通知内容:</label>
                         <textarea rows=6%></textarea>
                     </div>
-                    <span class="stu-sys-right-admin-notification-form-button">提交</span>
+                    <span class="stu-sys-right-form-button">提交</span>
                 </form>
             </div>
         </div>
     </div>
     <div class="stu-sys-foot">
-        <div id="stu-sys-foot-date"></div>
+        <div id="stu-sys-admin-foot-date"></div>
     </div>
 </div>
 `)
@@ -246,7 +246,7 @@ class StuSysAdmin{
     }
 
     get_foot_date(){
-        document.getElementById("stu-sys-foot-date").innerHTML = (new Date()).format1st("yyyyMd");
+        document.getElementById("stu-sys-admin-foot-date").innerHTML = (new Date()).format1st("yyyyMd");
     }
 
     show(){
