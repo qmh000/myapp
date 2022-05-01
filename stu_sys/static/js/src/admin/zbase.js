@@ -11,10 +11,10 @@ class StuSysAdmin{
     <div class="stu-sys-content">
         <div class="stu-sys-left">
             <div class="stu-sys-navigation">
-                <div class="stu-sys-navigation-item stu-sys-navigation-item-notification">
+                <div class="stu-sys-navigation-item admin-navigation-item-notification">
                     通知公告
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item admin-navigation-item-student">
                     学生管理
                 </div>
                 <div class="stu-sys-navigation-item">
@@ -23,7 +23,7 @@ class StuSysAdmin{
                 <div class="stu-sys-navigation-item">
                     课程管理
                 </div>
-                <div class="stu-sys-navigation-item stu-sys-navigation-item-logout">
+                <div class="stu-sys-navigation-item admin-navigation-item-logout">
                     退出登录
                 </div>
             </div>
@@ -36,7 +36,7 @@ class StuSysAdmin{
                 <div class="stu-sys-right-admin-notification-title">通知公告</div>
                 <div class="stu-sys-right-admin-notification-addition">您可以在此页发布有关通知</div>
                 <div class="stu-sys-right-admin-notification-table">
-                    <table id="table-notification" class="row-border table-notification-style">
+                    <table id="admin-notification-table" class="row-border table-notification-style">
                         <thead>
                             <tr>
                                 <th class="table-notification-style-th1">通知公告</th>
@@ -62,6 +62,53 @@ class StuSysAdmin{
                     <span class="stu-sys-right-form-button">提交</span>
                 </form>
             </div>
+            <div class="stu-sys-right-admin-student-manage">
+                <div class="stu-sys-right-admin-student-manage-title">学生管理</div>
+                <div class="stu-sys-right-admin-student-manage-addition">您可以在此页面检索学生信息，修改学生信息</div>
+                <div class="stu-sys-right-admin-student-manage-search">
+                    <select class="stu-sys-right-admin-student-manage-select" id="admin-student-manage-select-minior">
+                        <option>所有专业</option>
+                        <option>计算机科学与技术</option>
+                        <option>软件工程</option>
+                        <option>人工智能</option>
+                    </select>
+                    <select class="stu-sys-right-admin-student-manage-select" id="admin-student-manage-select-class">
+                        <option>所有班级</option>
+                        <option>2018级1班</option>
+                        <option>2019级1班</option>
+                        <option>2020级1班</option>
+                    </select>
+                    <select class="stu-sys-right-admin-student-manage-select" id="admin-student-manage-select-dept">
+                        <option>所有学院</option>
+                        <option>文学与传媒学院</option>
+                        <option>历史学院</option>
+                        <option>化学化工学院</option>
+                        <option>旅游学院</option>
+                        <option>艺术学院</option>
+                        <option>教师教育学院</option>
+                        <option>外国语学院</option>
+                        <option>数学与统计学院</option>
+                        <option>物理与电子工程学院</option>
+                    </select>
+                    <input type="button" value="检索" class="stu-sys-right-admin-student-manage-select-button">
+                </div>
+                <div class="stu-sys-right-admin-student-manage-table">
+                    <table id="admin-student-manage-table" class="display">
+                        <thead>
+                            <tr>
+                                <th>学生姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>学院</th>
+                                <th>辅修专业</th>
+                                <th>辅修班级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -69,25 +116,32 @@ class StuSysAdmin{
     </div>
 </div>
 `)
-
+        this.root.$stu_sys.append(this.$admin);
+        this.$head_welcome = this.$admin.find(".stu-sys-head-welcome");
+        this.$foot_date = this.$admin.find(".stu-sys-foot-date");
+        //页面
         this.$stu_sys_right_graphfield = this.$admin.find(".stu-sys-right-graphfield");
         this.$stu_sys_right_admin_notification = this.$admin.find(".stu-sys-right-admin-notification");
         this.$stu_sys_right_admin_notification.hide();
-        this.root.$stu_sys.append(this.$admin);
-        this.$navigation_item_logout = this.$admin.find(".stu-sys-navigation-item-logout");
-
-        this.$head_welcome = this.$admin.find(".stu-sys-head-welcome");
-        this.$foot_date = this.$admin.find(".stu-sys-foot-date");
-
-        this.$admin_notification = this.$admin.find(".stu-sys-navigation-item-notification");
+        this.$stu_sys_right_admin_notification_form = this.$admin.find(".stu-sys-right-admin-notification-form");
+        this.$stu_sys_right_admin_notification_form.hide();
+        this.$stu_sys_right_admin_student_manage = this.$admin.find(".stu-sys-right-admin-student-manage");
+        this.$stu_sys_right_admin_student_manage.hide();
+        this.$stu_sys_right_admin_student_manage_table = this.$admin.find(".stu-sys-right-admin-student-manage-table");
+        this.$stu_sys_right_admin_student_manage_table.hide();
+        //按钮
+        this.$navigation_item_logout = this.$admin.find(".admin-navigation-item-logout");
+        this.$admin_notification = this.$admin.find(".admin-navigation-item-notification");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
         this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
-        this.$stu_sys_right_admin_notification_form = this.$admin.find(".stu-sys-right-admin-notification-form");
-        this.$stu_sys_right_admin_notification_form.hide();
+        this.$notification_submit = this.$admin.find(".stu-sys-right-admin-notification-form-button");
+        this.$navigation_item_student = this.$admin.find(".admin-navigation-item-student");
+        this.$admin_student_manage_select_button = this.$admin.find(".stu-sys-right-admin-student-manage-select-button");
+        //文本信息
         this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
         this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
-        this.$notification_submit = this.$admin.find(".stu-sys-right-admin-notification-form-button");
+
         this.hide();
         this.start();
 
@@ -96,7 +150,7 @@ class StuSysAdmin{
     start(){
 
         $(document).ready(function(){
-            $('#table-notification').DataTable({
+            $('#admin-notification-table').DataTable({
                 select: 'single',
                 ajax: {
                     url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
@@ -117,9 +171,10 @@ class StuSysAdmin{
                     infoEmpty:'没有数据',
                     infoFiltered:"(从_MAX_条数据检索)",
                 },
-
+                scrollY: 150,
             });
         });
+
 
         this.get_foot_date();
         this.get_head_name();
@@ -129,7 +184,47 @@ class StuSysAdmin{
 
     add_listening_events(){
         this.add_listening_events_notification();
+        this.add_listening_events_student();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_student() {
+        let outer = this;
+        this.$navigation_item_student.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_student_manage.show();
+        });
+        this.$admin_student_manage_select_button.click(function(){
+            outer.admin_show_student_search_info();
+        });
+    }
+
+    admin_show_student_search_info() {
+        this.$stu_sys_right_admin_student_manage_table.show();
+        $(document).ready(function() {
+            $('#admin-student-manage-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_search_info/",
+                    type: "GET",
+                    dataType: 'json',
+                    data: {
+                        'minor': $("#admin-student-manage-select-minior").val(),
+                        'class': $("#admin-student-manage-select-class").val(),
+                        'dept': $("#admin-student-manage-select-dept").val(),
+                    },
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "sex"},
+                    {"data": "age"},
+                    {"data": "dept"},
+                    {"data": "minor_subject"},
+                    {"data": "minor_class"},
+                ],
+                scrollY: 150,
+            } );
+        });
     }
 
     add_listening_events_logout(){
@@ -143,8 +238,7 @@ class StuSysAdmin{
         let outer = this;
 
         this.$admin_notification.click(function() {
-            outer.$stu_sys_right_graphfield.hide();
-            outer.$stu_sys_right_admin_notification_form.hide();
+            outer.hide_all();
             outer.$stu_sys_right_admin_notification.show();
         });
 
@@ -194,7 +288,7 @@ class StuSysAdmin{
 
     check_notification_detail(){
         let outer = this;
-        let table = $('#table-notification').DataTable();
+        let table = $('#admin-notification-manage-table').DataTable();
         let title = table.rows({selected: true}).data()[0]['title'];
         console.log(title);
         $.ajax({
@@ -220,7 +314,7 @@ class StuSysAdmin{
 
     delete_notification_to_remote(){
         let outer = this;
-        let table = $('#table-notification').DataTable();
+        let table = $('#admin-notification-table').DataTable();
         let title = table.rows({selected: true}).data()[0]['title'];
 
         $.ajax({
@@ -255,5 +349,13 @@ class StuSysAdmin{
 
     hide(){
         this.$admin.hide();
+    }
+
+    hide_all(){
+        this.$stu_sys_right_graphfield.hide();
+        this.$stu_sys_right_admin_notification.hide();
+        this.$stu_sys_right_admin_notification_form.hide();
+        this.$stu_sys_right_admin_student_manage.hide();
+        this.$stu_sys_right_admin_student_manage_table.hide();
     }
 }

@@ -11,7 +11,7 @@ class StuSysTeacher{
     <div class="stu-sys-content">
         <div class="stu-sys-left">
             <div class="stu-sys-navigation">
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item stu-sys-teacher-info">
                     个人信息
                 </div>
                 <div class="stu-sys-navigation-item">
@@ -66,7 +66,6 @@ class StuSysTeacher{
 </div>
 `)
         this.root.$stu_sys.append(this.$teacher);
-        this.$navigation_item_logout = this.$teacher.find(".stu-sys-navigation-item-logout");
         this.$head_welcome = this.$teacher.find(".stu-sys-head-welcome");
         //页面
         this.$right_graphfield = this.$teacher.find(".stu-sys-right-graphfield");
@@ -75,7 +74,7 @@ class StuSysTeacher{
         this.$teacher_info_show = this.$teacher.find(".stu-sys-right-teacher-info-show");
         this.$teacher_info_show.hide();
         //按钮
-        this.$teacher_info = this.$teacher.find(".stu-sys-navigation-item");
+        this.$teacher_info = this.$teacher.find(".stu-sys-teacher-info");
         this.$teacher_logout = this.$teacher.find(".stu-sys-teacher-logout");
         this.$teacher_info_form_submit = this.$teacher.find(".teacher-info-form-submit");
         this.$teacher_info_form_show_submit = this.$teacher.find(".teacher-info-form-show-submit");
