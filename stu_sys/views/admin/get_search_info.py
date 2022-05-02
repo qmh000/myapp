@@ -7,10 +7,18 @@ def get_search_info(request):
     minor_class = cond.get("class")
     dept = cond.get("dept")
 
-    if minor == "所有专业" or minor_class == "所有班级" or dept == "所有学院":
+    if minor == "所有专业":
         students = Student.objects.all()
     else:
-        students = Student.objects.filter(minor_subject=minor, minor_class=minor_class, dept=dept)
+        students = Student.objects.filter(minor_subject=minor)
+    if minor_class == "所有班级":
+        students = students.all()
+    else:
+        students = students.filter(minor_class=minor_class)
+    if dept == "所有学院":
+        students = students.all()
+    else:
+        students = students.filter(dept=dept)
 
     list = []
     for stu in students:

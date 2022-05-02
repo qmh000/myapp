@@ -555,9 +555,93 @@
 
 .stu-sys-right-admin-student-manage-table {
     position: relative;
-    top: 30%
+    top: 25%
 }
 
 #admin-student-manage-table tr{
     text-align: center;
 }
+
+.stu-sys-right-admin-student-manage-form {
+    width: 40%;
+    height: 88%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+
+.stu-sys-right-admin-student-manage-form label {
+    font-size: 3vh;
+}
+
+#admin-student-info-form-show-name {
+    font-size: 3vh;
+}
+
+#admin-student-info-form-show-sex {
+    font-size: 3vh;
+}
+
+#admin-student-info-form-show-age {
+    font-size: 3vh;
+}
+
+#admin-student-info-form-show-dept {
+    font-size: 3vh;
+}
+
+.stu-sys-right-admin-course-manage {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-admin-course-manage-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    top: 10%;
+}
+
+.stu-sys-right-admin-course-manage-addition {
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-admin-course-manage-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-admin-course-info-add {
+    width: 40%;
+    height: 88%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+
+
+
