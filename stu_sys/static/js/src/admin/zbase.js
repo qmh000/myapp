@@ -209,6 +209,19 @@ class StuSysAdmin{
                     <input type="button" value="修改" class="stu-sys-right-admin-teacher-manage-modify-button">
                 </div>
             </div>
+            <div class="stu-sys-right-admin-teacher-manage-modify">
+                <form>
+                    <h3>修改教师信息</h3>
+                    <div class="stu-sys-right-form-item">
+                        <label id="admin-teacher-info-show-name"></label>
+                    </div>
+                    <div class="stu-sys-right-form-item">
+                        <label>所属院系:</label>
+                        <input type="text" class="admin-teacher-info-modify-dept" placeholder="请输入您所属的院系">
+                    </div>
+                    <span class="stu-sys-right-form-button stu-sys-right-admin-teacher-manage-modify-submit">提交</span>
+                </form>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -239,6 +252,8 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_teacher_manage.hide();
         this.$stu_sys_right_admin_teacher_manage_table = this.$admin.find(".stu-sys-right-admin-teacher-manage-table");
         this.$stu_sys_right_admin_teacher_manage_table.hide();
+        this.$stu_sys_right_admin_teacher_manage_modify = this.$admin.find(".stu-sys-right-admin-teacher-manage-modify");
+        this.$stu_sys_right_admin_teacher_manage_modify.hide();
         //按钮
         this.$navigation_item_notification = this.$admin.find(".admin-navigation-item-notification");
         this.$navigation_item_student = this.$admin.find(".admin-navigation-item-student");
@@ -256,6 +271,8 @@ class StuSysAdmin{
         this.$course_info_button_delete = this.$admin.find(".admin-course-info-button-delete");
         this.$course_info_add_submit = this.$admin.find(".stu-sys-right-admin-course-info-add-submit");
         this.$admin_teacher_manage_search_button = this.$admin.find(".stu-sys-right-admin-teacher-manage-search-button");
+        this.$admin_teacher_manage_modify_button = this.$admin.find(".stu-sys-right-admin-teacher-manage-modify-button");
+        this.$teacher_info_submit = this.$admin.find(".stu-sys-right-admin-teacher-manage-modify-submit");
         //文本信息
         this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
         this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
@@ -266,6 +283,7 @@ class StuSysAdmin{
         this.$admin_course_info_add_period = this.$admin.find(".course-info-input-period");
         this.$admin_course_info_add_credit = this.$admin.find(".course-info-input-credit");
         this.$admin_course_info_add_open_class = this.$admin.find(".course-info-input-open-class");
+        this.$admin_teacher_info_modify_dept = this.$admin.find(".admin-teacher-info-modify-dept");
 
         this.hide();
         this.start();
@@ -311,7 +329,7 @@ class StuSysAdmin{
                         {"data": "name"},
                         {"data": "dept"},
                     ],
-                    language:{
+                    language: {
                         zeroRecords:'抱歉,没有检索到数据',
                         search:'检索',  // 将英文search改为中文
                         searchPlaceholder:'请输入',//搜索框提示功能
@@ -324,8 +342,33 @@ class StuSysAdmin{
                     /* scrollY: 150 */
                 });
             });
-            this.$admin_teacher_manage_search_button.click(function(){
-                
+        });
+        this.$admin_teacher_manage_modify_button.click(function(){
+            let table = $('#admin-teacher-manage-table').DataTable();
+            let name = table.rows({selected: true}).data()[0]['name'];
+            document.getElementById("admin-teacher-info-show-name").innerHTML = "姓名："+name;
+            outer.hide_all();
+            outer.$stu_sys_right_admin_teacher_manage_modify.show();
+        });
+        this.$teacher_info_submit.click(function(){
+            let table = $('#admin-teacher-manage-table').DataTable();
+            let name = table.rows({selected: true}).data()[0]['name'];
+            let dept = outer.$admin_teacher_info_modify_dept.val();
+            $.ajax({
+                url: "http://43.138.22.107:8080/stu_sys/adminn/modify_teacher_info/",
+                type: "GET",
+                data: {
+                    'name': name,
+                    'dept': dept,
+                },
+                success: function(resp) {
+                    if(resp.result === "success") {
+                        confirm("修改成功！");
+                        location.reload();
+                    }else{
+                        confirm(resp.result);
+                    }
+                }
             });
         });
     }
@@ -663,5 +706,6 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_course_info_add.hide();
         this.$stu_sys_right_admin_teacher_manage.hide();
         this.$stu_sys_right_admin_teacher_manage_table.hide();
+        this.$stu_sys_right_admin_teacher_manage_modify.hide();
     }
 }
