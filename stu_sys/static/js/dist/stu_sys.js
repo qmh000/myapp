@@ -262,7 +262,7 @@ class StuSysAdmin{
                 <div class="stu-sys-navigation-item admin-navigation-item-student">
                     学生管理
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item admin-navigation-item-teacher">
                     教师管理
                 </div>
                 <div class="stu-sys-navigation-item admin-navigation-item-course">
@@ -304,7 +304,7 @@ class StuSysAdmin{
                         <label>通知内容:</label>
                         <textarea rows=6%></textarea>
                     </div>
-                    <span class="stu-sys-right-admin-notification-form-button">提交</span>
+                    <span class="stu-sys-right-form-button stu-sys-right-admin-notification-form-button">提交</span>
                 </form>
             </div>
             <div class="stu-sys-right-admin-student-manage">
@@ -428,6 +428,32 @@ class StuSysAdmin{
                     <span class="stu-sys-right-form-button stu-sys-right-admin-course-info-add-submit">提交</span>
                 </form>
             </div>
+            <div class="stu-sys-right-admin-teacher-manage">
+                <div class="stu-sys-right-admin-teacher-manage-title">教师管理</div>
+                <div class="stu-sys-right-admin-teacher-manage-addition">您可以在此页面检索教师信息，修改教师信息</div>
+                <div class="stu-sys-right-admin-teacher-manage-search">
+                    <select class="stu-sys-right-admin-teacher-manage-select" id="admin-teacher-manage-select-dept">
+                        <option>所有学院</option>
+                        <option>信息科学技术学院</option>>
+                        <option>数学与统计学院</option>
+                        <option>物理与电子工程学院</option>
+                    </select>
+                    <input type="button" value="检索" class="stu-sys-right-admin-teacher-manage-search-button">
+                </div>
+                <div class="stu-sys-right-admin-teacher-manage-table">
+                    <table id="admin-teacher-manage-table" class="display">
+                        <thead>
+                            <tr>
+                                <th>教师姓名</th>
+                                <th>所属院系</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="button" value="修改" class="stu-sys-right-admin-teacher-manage-modify-button">
+                </div>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -454,9 +480,14 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_course_manage.hide();
         this.$stu_sys_right_admin_course_info_add = this.$admin.find(".stu-sys-right-admin-course-info-add");
         this.$stu_sys_right_admin_course_info_add.hide();
+        this.$stu_sys_right_admin_teacher_manage = this.$admin.find(".stu-sys-right-admin-teacher-manage");
+        this.$stu_sys_right_admin_teacher_manage.hide();
+        this.$stu_sys_right_admin_teacher_manage_table = this.$admin.find(".stu-sys-right-admin-teacher-manage-table");
+        this.$stu_sys_right_admin_teacher_manage_table.hide();
         //按钮
         this.$navigation_item_notification = this.$admin.find(".admin-navigation-item-notification");
         this.$navigation_item_student = this.$admin.find(".admin-navigation-item-student");
+        this.$navigation_item_teacher = this.$admin.find(".admin-navigation-item-teacher");
         this.$navigation_item_course = this.$admin.find(".admin-navigation-item-course");
         this.$navigation_item_logout = this.$admin.find(".admin-navigation-item-logout");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
@@ -469,6 +500,7 @@ class StuSysAdmin{
         this.$course_info_button_add = this.$admin.find(".admin-course-info-button-add");
         this.$course_info_button_delete = this.$admin.find(".admin-course-info-button-delete");
         this.$course_info_add_submit = this.$admin.find(".stu-sys-right-admin-course-info-add-submit");
+        this.$admin_teacher_manage_search_button = this.$admin.find(".stu-sys-right-admin-teacher-manage-search-button");
         //文本信息
         this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
         this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
@@ -495,8 +527,52 @@ class StuSysAdmin{
     add_listening_events(){
         this.add_listening_events_notification();
         this.add_listening_events_student();
+        this.add_listening_events_teacher();
         this.add_listening_events_course();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_teacher() {
+        let outer = this;
+
+        this.$navigation_item_teacher.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_teacher_manage.show();
+        });
+        this.$admin_teacher_manage_search_button.click(function(){
+            outer.$stu_sys_right_admin_teacher_manage_table.show();
+            $(document).ready(function(){
+                $('#admin-teacher-manage-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
+                        type: "GET",
+                        dataType: 'json',
+                        data: {
+                            'dept': $("#admin-teacher-manage-select-dept").val(),
+                        },
+                    },
+                    "columns": [
+                        {"data": "name"},
+                        {"data": "dept"},
+                    ],
+                    language:{
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    /* scrollY: 150 */
+                });
+            });
+            this.$admin_teacher_manage_search_button.click(function(){
+                
+            });
+        });
     }
 
     add_listening_events_course() {
@@ -685,7 +761,7 @@ class StuSysAdmin{
         this.$navigation_item_notification.click(function() {
             outer.hide_all();
             outer.$stu_sys_right_admin_notification.show();
-            $(document).read(function(){
+            $(document).ready(function(){
                 $('#admin-notification-table').DataTable({
                     select: 'single',
                     ajax: {
@@ -697,7 +773,7 @@ class StuSysAdmin{
                         {"data": "title"},
                         {"data": "create_time"},
                     ],
-                    language:{
+                    language: {
                         zeroRecords:'抱歉,没有检索到数据',
                         search:'检索',  // 将英文search改为中文
                         searchPlaceholder:'请输入',//搜索框提示功能
@@ -829,81 +905,11 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_student_manage_table.hide();
         this.$stu_sys_right_admin_student_manage_form.hide();
         this.$stu_sys_right_admin_course_manage.hide();
+        this.$stu_sys_right_admin_course_info_add.hide();
+        this.$stu_sys_right_admin_teacher_manage.hide();
+        this.$stu_sys_right_admin_teacher_manage_table.hide();
     }
 }
-/**
- * Created by zhuwenqi on 2017/6/16.
- */
-/**
- * @param options 弹窗基本配置信息
- * @constructor 构造方法
- */
-function MyLayer(options) {
-  this.options = options ;
-}
-/**
- * 打开弹窗
- */
-MyLayer.prototype.openLayer = function () {
-  var background_layer = document.createElement("div");
-  background_layer.style.display = "none";
-  background_layer.style.position = "absolute";
-  background_layer.style.top = "0px";
-  background_layer.style.left = "0px";
-  background_layer.style.width = "100%";
-  background_layer.style.height = "100%";
-  background_layer.style.backgroundColor = "gray";
-  background_layer.style.zIndex = "1001";
-  background_layer.style.opacity = "0.8" ;
-  var open_layer = document.createElement("div");
-  open_layer.style.display = "none";
-  open_layer.style.position = "absolute";
-  open_layer.style.top = this.options.top === undefined ? "10%" : this.options.top;
-  open_layer.style.left = this.options.left === undefined ? "10%" :this.options.left;
-  open_layer.style.width = this.options.width === undefined ? "80%" : this.options.width;
-  open_layer.style.height = this.options.height === undefined ? "80%" : this.options.height;
-  open_layer.style.border = "1px solid lightblue";
-  open_layer.style.borderRadius = "15px" ;
-  open_layer.style.boxShadow = "4px 4px 10px #171414";
-  open_layer.style.backgroundColor = "white";
-  open_layer.style.zIndex = "1002";
-  open_layer.style.overflow = "auto";
-  var div_toolBar = document.createElement("div");
-  div_toolBar.style.textAlign = "right";
-  div_toolBar.style.paddingTop = "10px" ;
-  div_toolBar.style.backgroundColor = "aliceblue";
-  div_toolBar.style.height = "40px";
-  var span_title = document.createElement("span");
-  span_title.style.fontSize = "18px";
-  span_title.style.color = "blue" ;
-  span_title.style.float = "left";
-  span_title.style.marginLeft = "20px";
-  var span_title_content = document.createTextNode(this.options.title === undefined ? "" : this.options.title);
-  span_title.appendChild(span_title_content);
-  div_toolBar.appendChild(span_title);
-  var span_close = document.createElement("span");
-  span_close.style.fontSize = "16px";
-  span_close.style.color = "blue" ;
-  span_close.style.cursor = "pointer";
-  span_close.style.marginRight = "20px";
-  span_close.onclick = function () {
-    open_layer.style.display = "none";
-    background_layer.style.display = "none";
-  };
-  var span_close_content = document.createTextNode("关闭");
-  span_close.appendChild(span_close_content);
-  div_toolBar.appendChild(span_close);
-  open_layer.appendChild(div_toolBar);
-  var div_content = document.createElement("div");
-  div_content.style.textAlign = "center";
-  var content_area = document.createTextNode(this.options.content === undefined ? "" : this.options.content);
-  div_content.appendChild(content_area);
-  open_layer.appendChild(div_content);
-  document.body.appendChild(open_layer);
-  document.body.appendChild(background_layer);
-  open_layer.style.display = "block" ;
-  background_layer.style.display = "block";
-};
 class StuSysStudent{
     constructor(root){
         this.root = root;

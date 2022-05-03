@@ -17,7 +17,7 @@ class StuSysAdmin{
                 <div class="stu-sys-navigation-item admin-navigation-item-student">
                     学生管理
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item admin-navigation-item-teacher">
                     教师管理
                 </div>
                 <div class="stu-sys-navigation-item admin-navigation-item-course">
@@ -59,7 +59,7 @@ class StuSysAdmin{
                         <label>通知内容:</label>
                         <textarea rows=6%></textarea>
                     </div>
-                    <span class="stu-sys-right-admin-notification-form-button">提交</span>
+                    <span class="stu-sys-right-form-button stu-sys-right-admin-notification-form-button">提交</span>
                 </form>
             </div>
             <div class="stu-sys-right-admin-student-manage">
@@ -183,6 +183,32 @@ class StuSysAdmin{
                     <span class="stu-sys-right-form-button stu-sys-right-admin-course-info-add-submit">提交</span>
                 </form>
             </div>
+            <div class="stu-sys-right-admin-teacher-manage">
+                <div class="stu-sys-right-admin-teacher-manage-title">教师管理</div>
+                <div class="stu-sys-right-admin-teacher-manage-addition">您可以在此页面检索教师信息，修改教师信息</div>
+                <div class="stu-sys-right-admin-teacher-manage-search">
+                    <select class="stu-sys-right-admin-teacher-manage-select" id="admin-teacher-manage-select-dept">
+                        <option>所有学院</option>
+                        <option>信息科学技术学院</option>>
+                        <option>数学与统计学院</option>
+                        <option>物理与电子工程学院</option>
+                    </select>
+                    <input type="button" value="检索" class="stu-sys-right-admin-teacher-manage-search-button">
+                </div>
+                <div class="stu-sys-right-admin-teacher-manage-table">
+                    <table id="admin-teacher-manage-table" class="display">
+                        <thead>
+                            <tr>
+                                <th>教师姓名</th>
+                                <th>所属院系</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="button" value="修改" class="stu-sys-right-admin-teacher-manage-modify-button">
+                </div>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -209,9 +235,14 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_course_manage.hide();
         this.$stu_sys_right_admin_course_info_add = this.$admin.find(".stu-sys-right-admin-course-info-add");
         this.$stu_sys_right_admin_course_info_add.hide();
+        this.$stu_sys_right_admin_teacher_manage = this.$admin.find(".stu-sys-right-admin-teacher-manage");
+        this.$stu_sys_right_admin_teacher_manage.hide();
+        this.$stu_sys_right_admin_teacher_manage_table = this.$admin.find(".stu-sys-right-admin-teacher-manage-table");
+        this.$stu_sys_right_admin_teacher_manage_table.hide();
         //按钮
         this.$navigation_item_notification = this.$admin.find(".admin-navigation-item-notification");
         this.$navigation_item_student = this.$admin.find(".admin-navigation-item-student");
+        this.$navigation_item_teacher = this.$admin.find(".admin-navigation-item-teacher");
         this.$navigation_item_course = this.$admin.find(".admin-navigation-item-course");
         this.$navigation_item_logout = this.$admin.find(".admin-navigation-item-logout");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
@@ -224,6 +255,7 @@ class StuSysAdmin{
         this.$course_info_button_add = this.$admin.find(".admin-course-info-button-add");
         this.$course_info_button_delete = this.$admin.find(".admin-course-info-button-delete");
         this.$course_info_add_submit = this.$admin.find(".stu-sys-right-admin-course-info-add-submit");
+        this.$admin_teacher_manage_search_button = this.$admin.find(".stu-sys-right-admin-teacher-manage-search-button");
         //文本信息
         this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
         this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
@@ -250,8 +282,52 @@ class StuSysAdmin{
     add_listening_events(){
         this.add_listening_events_notification();
         this.add_listening_events_student();
+        this.add_listening_events_teacher();
         this.add_listening_events_course();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_teacher() {
+        let outer = this;
+
+        this.$navigation_item_teacher.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_teacher_manage.show();
+        });
+        this.$admin_teacher_manage_search_button.click(function(){
+            outer.$stu_sys_right_admin_teacher_manage_table.show();
+            $(document).ready(function(){
+                $('#admin-teacher-manage-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
+                        type: "GET",
+                        dataType: 'json',
+                        data: {
+                            'dept': $("#admin-teacher-manage-select-dept").val(),
+                        },
+                    },
+                    "columns": [
+                        {"data": "name"},
+                        {"data": "dept"},
+                    ],
+                    language:{
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    /* scrollY: 150 */
+                });
+            });
+            this.$admin_teacher_manage_search_button.click(function(){
+                
+            });
+        });
     }
 
     add_listening_events_course() {
@@ -440,7 +516,7 @@ class StuSysAdmin{
         this.$navigation_item_notification.click(function() {
             outer.hide_all();
             outer.$stu_sys_right_admin_notification.show();
-            $(document).read(function(){
+            $(document).ready(function(){
                 $('#admin-notification-table').DataTable({
                     select: 'single',
                     ajax: {
@@ -452,7 +528,7 @@ class StuSysAdmin{
                         {"data": "title"},
                         {"data": "create_time"},
                     ],
-                    language:{
+                    language: {
                         zeroRecords:'抱歉,没有检索到数据',
                         search:'检索',  // 将英文search改为中文
                         searchPlaceholder:'请输入',//搜索框提示功能
@@ -584,5 +660,8 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_student_manage_table.hide();
         this.$stu_sys_right_admin_student_manage_form.hide();
         this.$stu_sys_right_admin_course_manage.hide();
+        this.$stu_sys_right_admin_course_info_add.hide();
+        this.$stu_sys_right_admin_teacher_manage.hide();
+        this.$stu_sys_right_admin_teacher_manage_table.hide();
     }
 }
