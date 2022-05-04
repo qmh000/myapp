@@ -54,10 +54,10 @@ class StuSysAdmin{
                     <h3>通知公告</h3>
                     <div class="stu-sys-right-form-item">
                         <label>标题:</label>
-                        <input type="text" placeholder="请输入通知标题"></div>
+                        <input class="admin-notification-form-input-title" type="text" placeholder="请输入通知标题"></div>
                     <div class="stu-sys-right-form-item">
                         <label>通知内容:</label>
-                        <textarea rows=6%></textarea>
+                        <textarea class="admin-notification-form-input-text" rows=6%></textarea>
                     </div>
                     <span class="stu-sys-right-form-button stu-sys-right-admin-notification-form-button">提交</span>
                 </form>
@@ -274,8 +274,8 @@ class StuSysAdmin{
         this.$admin_teacher_manage_modify_button = this.$admin.find(".stu-sys-right-admin-teacher-manage-modify-button");
         this.$teacher_info_submit = this.$admin.find(".stu-sys-right-admin-teacher-manage-modify-submit");
         //文本信息
-        this.$notification_title = this.$admin.find(".stu-sys-right-admin-notification-form-item input");
-        this.$notification_detail = this.$admin.find(".stu-sys-right-admin-notification-form-item textarea");
+        this.$notification_title = this.$admin.find(".admin-notification-form-input-title");
+        this.$notification_detail = this.$admin.find(".admin-notification-form-input-text");
         this.$admin_student_info_modify_minor = this.$admin.find(".admin-student-info-modify-minor");
         this.$admin_student_info_modify_class = this.$admin.find(".admin-student-info-modify-class");
         this.$admin_course_info_add_name = this.$admin.find(".course-info-input-name");

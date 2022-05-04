@@ -14,14 +14,11 @@ class StuSysStudent{
                 <div class="stu-sys-navigation-item stu-sys-student-info">
                     个人信息
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item stu-sys-student-course-select">
                     网上选课
                 </div>
                 <div class="stu-sys-navigation-item">
                     培养方案
-                </div>
-                <div class="stu-sys-navigation-item">
-                    课程信息
                 </div>
                 <div class="stu-sys-navigation-item">
                     考试成绩
@@ -89,6 +86,26 @@ class StuSysStudent{
                     <span class="stu-sys-right-form-button student-info-form-show-submit">修改</span>
                 </form>
             </div>
+            <div class="stu-sys-right-student-select-course">
+                <div class="stu-sys-right-student-select-course-title">网上选课</div>
+                <div class="stu-sys-right-student-select-course-addition">您可以在此页面查看已选课程，选课</div>
+                <div class="stu-sys-right-student-select-course-table">
+                    <table style="width: 100% !important" id="student-select-course-table" class="row-border">
+                        <thead>
+                            <tr>
+                                <th>课程名称</th>
+                                <th>任课老师</th>
+                                <th>学时</th>
+                                <th>学分</th>
+                                <th>开课班级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="button" id="student-select-course-table-add" value="选课">
+                </div>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -104,11 +121,14 @@ class StuSysStudent{
         this.$student_info_form.hide();
         this.$student_info_show = this.$student.find(".stu-sys-right-student-info-show");
         this.$student_info_show.hide();
+        this.$student_select_course = this.$student.find(".stu-sys-right-student-select-course");
+        this.$student_select_course.hide();
         //按钮
         this.$student_info = this.$student.find(".stu-sys-student-info");
+        this.$student_course = this.$student.find(".stu-sys-student-course-select");
+        this.$student_logout = this.$student.find(".stu-sys-student-logout");
         this.$student_info_form_submit = this.$student.find(".student-info-form-submit");
         this.$student_info_form_show_submit = this.$student.find(".student-info-form-show-submit");
-        this.$student_logout = this.$student.find(".stu-sys-student-logout");
         //文本信息
         this.$student_info_name = this.$student.find(".student-info-input-name");
         this.$student_info_sex = this.$student.find(".student-info-input-sex");
@@ -122,6 +142,25 @@ class StuSysStudent{
     }
 
     start(){
+        $(document).ready(function() {
+            $('#student-select-course-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/student/get_selected_course/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "tname"},
+                    {"data": "period"},
+                    {"data": "credit"},
+                    {"data": "open_class"}
+                ],
+            } );
+        });
+
+
         this.get_foot_date();
 
         this.add_listening_events();
@@ -129,7 +168,16 @@ class StuSysStudent{
 
     add_listening_events(){
         this.add_listening_events_student_info();
+        this.add_listening_events_course();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_course(){
+        let outer = this;
+        this.$student_course.click(function(){
+            outer.hide_all();
+            outer.$student_select_course.show();
+        });
     }
 
     add_listening_events_student_info(){
@@ -251,6 +299,7 @@ class StuSysStudent{
         this.$right_graphfield.hide();
         this.$student_info_show.hide();
         this.$student_info_form.hide();
+        this.$student_select_course.hide();
     }
 
     hide(){

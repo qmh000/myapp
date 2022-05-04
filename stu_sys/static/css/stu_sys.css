@@ -709,3 +709,96 @@
     color: #000;
 }
 
+.stu-sys-right-teacher-course-manage {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-teacher-course-manage-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    top: 10%;
+}
+
+.stu-sys-right-teacher-course-manage-addition {
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-teacher-course-manage-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-teacher-class-manage {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-teacher-class-manage-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    top: 10%;
+}
+
+.stu-sys-right-teacher-class-manage-addition {
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-teacher-class-manage-search{
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-teacher-class-manage-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-student-select-course {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-student-select-course-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    top: 10%;
+}
+
+.stu-sys-right-student-select-course-addition {
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-student-select-course-table {
+    position: relative;
+    top: 20%
+}
