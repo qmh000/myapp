@@ -20,8 +20,13 @@ def save_grade(request):
             'result': "成绩不能为空"
         })
     cid = Course.objects.get(name=cname).cid
-    temp = Select(user=username, cid=cid, grade=grade)
-    temp.save()
+    sc = Select.objects.filter(user=username, cid=cid)
+    if not sc:
+        return JsonResponse({
+            'result': "该学生未选修该门课程"
+        })
+    sc[0].grade = grade
+    sc[0].save()
     return JsonResponse({
         'result': "success"
     })

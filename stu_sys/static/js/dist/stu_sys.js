@@ -1130,8 +1130,17 @@ class StuSysStudent{
                         <tbody>
                         </tbody>
                     </table>
-                    <input type="button" onclick="openWindow()" id="student-notification-detail" value="查看">
+                    <input type="button" class="student-notification-detail" value="查看">
                 </div>
+            </div>
+            <div class="stu-sys-right-notification-show">
+                <form>
+                    <h3 id="student-notification-detail-title"></h3>
+                    <div class="stu-sys-right-form-item">
+                        <label id="student-notification-detail-text"></label>
+                    </div>
+                    <span class="stu-sys-right-form-button student-notification-return-button">返回</span>
+                </form>
             </div>
         </div>
     </div>
@@ -1156,6 +1165,8 @@ class StuSysStudent{
         this.$student_show_grade.hide();
         this.$student_show_notification = this.$student.find(".stu-sys-right-student-notification");
         this.$student_show_notification.hide();
+        this.$student_show_notification_detail = this.$student.find(".stu-sys-right-notification-show");
+        this.$student_show_notification_detail.hide();
         //按钮
         this.$student_info = this.$student.find(".stu-sys-student-info");
         this.$student_notification = this.$student.find(".stu-sys-student-notification");
@@ -1167,6 +1178,8 @@ class StuSysStudent{
         this.$student_info_form_show_submit = this.$student.find(".student-info-form-show-submit");
         this.$student_select_course_table_add = this.$student.find(".student-select-course-table-add");
         this.$student_add_course_submit = this.$student.find(".student-add-course-table-button");
+        this.$student_notification_detail = this.$student.find(".student-notification-detail");
+        this.$student_notification_return_button = this.$student.find(".student-notification-return-button");
         //文本信息
         this.$student_info_name = this.$student.find(".student-info-input-name");
         this.$student_info_sex = this.$student.find(".student-info-input-sex");
@@ -1180,86 +1193,92 @@ class StuSysStudent{
     }
 
     start(){
-        $(document).ready(function() {
-            $('#student-select-course-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/student/get_selected_course/",
-                    type: "GET",
-                    dataType: 'json',
-                },
-                'columns': [
-                    {"data": "name"},
-                    {"data": "tname"},
-                    {"data": "period"},
-                    {"data": "credit"},
-                    {"data": "open_class"}
-                ],
-            } );
-        });
-
-        $(document).ready(function() {
-            $('#student-select-one-course-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/student/show_selectable_course/",
-                    type: "GET",
-                    dataType: 'json',
-                },
-                'columns': [
-                    {"data": "name"},
-                    {"data": "tname"},
-                    {"data": "period"},
-                    {"data": "credit"},
-                    {"data": "open_class"}
-                ],
-            } );
-        });
-
-        $(document).ready(function() {
-            $('#student-grade-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/student/show_grade/",
-                    type: "GET",
-                    dataType: 'json',
-                },
-                'columns': [
-                    {"data": "name"},
-                    {"data": "grade"},
-                ],
-            } );
-        });
-
-        $(document).ready(function(){
-            $('#student-notification-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
-                    type: "GET",
-                    dataType: 'json',
-                },
-                "columns": [
-                    {"data": "title"},
-                    {"data": "create_time"},
-                ],
-                language: {
-                    zeroRecords:'抱歉,没有检索到数据',
-                    search:'检索',  // 将英文search改为中文
-                    searchPlaceholder:'请输入',//搜索框提示功能
-                    lengthMenu:'每页显示_MENU_条记录',
-                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                    infoEmpty:'没有数据',
-                    infoFiltered:"(从_MAX_条数据检索)",
-                },
-                /* scrollY: 150 */
+        try{
+            
+            $(document).ready(function() {
+                $('#student-select-course-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/student/get_selected_course/",
+                        type: "GET",
+                        dataType: 'json',
+                    },
+                    'columns': [
+                        {"data": "name"},
+                        {"data": "tname"},
+                        {"data": "period"},
+                        {"data": "credit"},
+                        {"data": "open_class"}
+                    ],
+                } );
             });
-        });
 
-        this.get_foot_date();
+            $(document).ready(function() {
+                $('#student-select-one-course-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/student/show_selectable_course/",
+                        type: "GET",
+                        dataType: 'json',
+                    },
+                    'columns': [
+                        {"data": "name"},
+                        {"data": "tname"},
+                        {"data": "period"},
+                        {"data": "credit"},
+                        {"data": "open_class"}
+                    ],
+                } );
+            });
 
-        this.add_listening_events();
+            $(document).ready(function() {
+                $('#student-grade-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/student/show_grade/",
+                        type: "GET",
+                        dataType: 'json',
+                    },
+                    'columns': [
+                        {"data": "name"},
+                        {"data": "grade"},
+                    ],
+                } );
+            });
+
+            $(document).ready(function(){
+                $('#student-notification-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
+                        type: "GET",
+                        dataType: 'json',
+                    },
+                    "columns": [
+                        {"data": "title"},
+                        {"data": "create_time"},
+                    ],
+                    language: {
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    /* scrollY: 150 */
+                });
+            });
+        }
+        catch(err){
+            console.log("我到这里了"+err);
+        }
+        finally{
+            this.get_foot_date();
+            this.add_listening_events();
+        }
     }
 
     add_listening_events(){
@@ -1273,6 +1292,30 @@ class StuSysStudent{
     add_listening_events_notification() {
         let outer = this;
         this.$student_notification.click(function(){
+            outer.hide_all();
+            outer.$student_show_notification.show();
+        });
+        this.$student_notification_detail.click(function(){
+            outer.hide_all();
+            outer.$student_show_notification_detail.show();
+            let table = $('#student-notification-table').DataTable();
+            let title = table.rows({selected: true}).data()[0]['title'];
+            console.log(title);
+            $.ajax({
+                url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
+                type: "GET",
+                data: {
+                    title: title
+                },
+                success: function(resp) {
+                    console.log(resp);
+                    document.getElementById("student-notification-detail-title").innerHTML = resp.title;
+                    document.getElementById("student-notification-detail-text").innerHTML = resp.result;
+                }
+            });
+        });
+        this.$student_notification_return_button.click(function(){
+            location.reload();
             outer.hide_all();
             outer.$student_show_notification.show();
         });
@@ -1451,6 +1494,7 @@ class StuSysStudent{
         this.$student_select_one_course.hide();
         this.$student_show_grade.hide();
         this.$student_show_notification.hide();
+        this.$student_show_notification_detail.hide();
     }
 
     hide(){
