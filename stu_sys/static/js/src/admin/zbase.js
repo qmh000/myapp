@@ -38,7 +38,7 @@ class StuSysAdmin{
                 <div class="stu-sys-right-admin-notification-table">
                     <table id="admin-notification-table" class="row-border table-notification-style">
                         <thead>
-                            <tr style="width=100% !important">
+                            <tr>
                                 <th class="table-notification-style-th1">通知公告</th>
                                 <th class="table-notification-style-th2">发布时间</th>
                             </tr>
@@ -48,6 +48,15 @@ class StuSysAdmin{
                     <input type="button" class="admin-notification-add" value="添加">
                     <input type="button" class="admin-notification-delete" value="删除">
                 </div>
+            </div>
+            <div class="stu-sys-right-notification-show">
+                <form>
+                    <h3 id="admin-notification-detail-title"></h3>
+                    <div class="stu-sys-right-form-item">
+                        <label id="admin-notification-detail-text"></label>
+                    </div>
+                    <span class="stu-sys-right-form-button admin-notification-return-button">返回</span>
+                </form>
             </div>
             <div class="stu-sys-right-admin-notification-form">
                 <form>
@@ -238,6 +247,8 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_notification.hide();
         this.$stu_sys_right_admin_notification_form = this.$admin.find(".stu-sys-right-admin-notification-form");
         this.$stu_sys_right_admin_notification_form.hide();
+        this.$stu_sys_right_admin_notification_show = this.$admin.find(".stu-sys-right-notification-show");
+        this.$stu_sys_right_admin_notification_show.hide();
         this.$stu_sys_right_admin_student_manage = this.$admin.find(".stu-sys-right-admin-student-manage");
         this.$stu_sys_right_admin_student_manage.hide();
         this.$stu_sys_right_admin_student_manage_table = this.$admin.find(".stu-sys-right-admin-student-manage-table");
@@ -262,6 +273,7 @@ class StuSysAdmin{
         this.$navigation_item_logout = this.$admin.find(".admin-navigation-item-logout");
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
         this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
+        this.$admin_notification_return_button = this.$admin.find(".admin-notification-return-button");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
         this.$notification_submit = this.$admin.find(".stu-sys-right-admin-notification-form-button");
         this.$admin_student_manage_search_button = this.$admin.find(".stu-sys-right-admin-student-manage-search-button");
@@ -291,6 +303,32 @@ class StuSysAdmin{
     }
 
     start(){
+        $(document).ready(function(){
+            $('#admin-notification-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                "columns": [
+                    {"data": "title"},
+                    {"data": "create_time"},
+                ],
+                language: {
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+                /* scrollY: 150 */
+            });
+        });
+
         this.get_foot_date();
         this.get_head_name();
 
@@ -559,34 +597,11 @@ class StuSysAdmin{
         this.$navigation_item_notification.click(function() {
             outer.hide_all();
             outer.$stu_sys_right_admin_notification.show();
-            $(document).ready(function(){
-                $('#admin-notification-table').DataTable({
-                    select: 'single',
-                    ajax: {
-                        url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
-                        type: "GET",
-                        dataType: 'json',
-                    },
-                    "columns": [
-                        {"data": "title"},
-                        {"data": "create_time"},
-                    ],
-                    language: {
-                        zeroRecords:'抱歉,没有检索到数据',
-                        search:'检索',  // 将英文search改为中文
-                        searchPlaceholder:'请输入',//搜索框提示功能
-                        lengthMenu:'每页显示_MENU_条记录',
-                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                        infoEmpty:'没有数据',
-                        infoFiltered:"(从_MAX_条数据检索)",
-                    },
-                    /* scrollY: 150 */
-                });
-            });
         });
 
         this.$admin_notification_detail.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_notification_show.show();
             outer.check_notification_detail();
         });
 
@@ -598,6 +613,11 @@ class StuSysAdmin{
         });
         this.$notification_submit.click(function(){
             outer.add_notification_to_remote();
+        });
+        this.$admin_notification_return_button.click(function(){
+            location.reload();
+            outer.hide_all();
+            outer.$stu_sys_right_admin_notification.show();
         });
     }
 
@@ -632,7 +652,7 @@ class StuSysAdmin{
 
     check_notification_detail(){
         let outer = this;
-        let table = $('#admin-notification-manage-table').DataTable();
+        let table = $('#admin-notification-table').DataTable();
         let title = table.rows({selected: true}).data()[0]['title'];
         console.log(title);
         $.ajax({
@@ -641,16 +661,10 @@ class StuSysAdmin{
             data: {
                 title: title
             },
-            success: function openWindow(resp) {
+            success: function(resp) {
                 console.log(resp);
-                new MyLayer({
-                    top:"10%",
-                    left:"10%",
-                    width:"80%",
-                    height:"80%",
-                    title: resp.title,
-                    content: resp.result
-                }).openLayer();
+                document.getElementById("admin-notification-detail-title").innerHTML = resp.title;
+                document.getElementById("admin-notification-detail-text").innerHTML = resp.result;
             }
         });
 
@@ -707,5 +721,6 @@ class StuSysAdmin{
         this.$stu_sys_right_admin_teacher_manage.hide();
         this.$stu_sys_right_admin_teacher_manage_table.hide();
         this.$stu_sys_right_admin_teacher_manage_modify.hide();
+        this.$stu_sys_right_admin_notification_show.hide();
     }
 }

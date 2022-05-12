@@ -4,7 +4,7 @@ from stu_sys.models.course import Course
 
 
 class Select(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cid = models.OneToOneField(Course, on_delete=models.CASCADE)
-    grade = models.IntegerField()
+    user = models.CharField(max_length=30)
+    cid = models.IntegerField()
+    grade = models.IntegerField(null=True, blank=True)
 

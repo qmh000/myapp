@@ -5,24 +5,17 @@ from stu_sys.models.tsu_user import Tsu_user
 from stu_sys.models.student import Student
 from stu_sys.models.select import Select
 
-def get_selected_course(request):
+def show_grade(request):
     user = request.user
-    tsu_user = Tsu_user.objects.get(user=user)
-    stu = Student.objects.get(user=tsu_user)
     sc = Select.objects.filter(user=user)
     list = []
     for obj in sc:
         cid = obj.cid
         cour = Course.objects.get(cid=cid)
-        if stu.minor_class == cour.open_class:
-            tsu_user = Tsu_user.objects.get(user=cour.tuser)
-            tname = Teacher.objects.get(user=tsu_user).name
+        if obj.grade != None:
             cour_info = {
                 'name': cour.name,
-                'tname': tname,
-                'period': cour.period,
-                'credit': cour.credit,
-                'open_class': cour.open_class,
+                'grade': obj.grade,
             }
             list.append(cour_info)
     obj_dic = {}

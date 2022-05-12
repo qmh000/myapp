@@ -14,13 +14,16 @@ class StuSysStudent{
                 <div class="stu-sys-navigation-item stu-sys-student-info">
                     个人信息
                 </div>
+                <div class="stu-sys-navigation-item stu-sys-student-notification">
+                    通知公告
+                </div>
                 <div class="stu-sys-navigation-item stu-sys-student-course-select">
                     网上选课
                 </div>
-                <div class="stu-sys-navigation-item">
-                    培养方案
+                <div class="stu-sys-navigation-item hrefstu-sys-student-plan">
+                    <a href="http://43.138.22.107:8080/stu_sys/student/plan/" style="text-decoration: none;color: #fff;">培养方案</a>
                 </div>
-                <div class="stu-sys-navigation-item">
+                <div class="stu-sys-navigation-item stu-sys-student-grade">
                     考试成绩
                 </div>
                 <div class="stu-sys-navigation-item stu-sys-student-logout">
@@ -87,7 +90,7 @@ class StuSysStudent{
                 </form>
             </div>
             <div class="stu-sys-right-student-select-course">
-                <div class="stu-sys-right-student-select-course-title">网上选课</div>
+                <div class="stu-sys-right-student-select-course-title">已选课程</div>
                 <div class="stu-sys-right-student-select-course-addition">您可以在此页面查看已选课程，选课</div>
                 <div class="stu-sys-right-student-select-course-table">
                     <table style="width: 100% !important" id="student-select-course-table" class="row-border">
@@ -103,7 +106,60 @@ class StuSysStudent{
                         <tbody>
                         </tbody>
                     </table>
-                    <input type="button" id="student-select-course-table-add" value="选课">
+                    <input type="button" class="student-select-course-table-add" value="选课">
+                </div>
+            </div>
+            <div class="stu-sys-right-student-select-one-course">
+                <div class="stu-sys-right-student-select-course-title">可选课程</div>
+                <div class="stu-sys-right-student-select-course-addition">请选择一门课</div>
+                <div class="stu-sys-right-student-select-one-course-table">
+                    <table style="width: 100% !important" id="student-select-one-course-table" class="row-border">
+                        <thead>
+                            <tr>
+                                <th>课程名称</th>
+                                <th>任课老师</th>
+                                <th>学时</th>
+                                <th>学分</th>
+                                <th>开课班级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="button" class="student-add-course-table-button" value="提交">
+                </div>
+            </div>
+            <div class="stu-sys-right-student-grade">
+                <div class="stu-sys-right-student-grade-title">考试成绩</div>
+                <div class="stu-sys-right-student-grade-addition">您可以在此页面查看考试成绩</div>
+                <div class="stu-sys-right-student-grade-table">
+                    <table style="width: 100% !important" id="student-grade-table" class="row-border">
+                        <thead>
+                            <tr>
+                                <th>课程名称</th>
+                                <th>成绩</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="stu-sys-right-student-notification">
+                <div class="stu-sys-right-student-notification-title">通知公告</div>
+                <div class="stu-sys-right-student-notification-addition">您可以在此页查看有关通知</div>
+                <div class="stu-sys-right-student-notification-table">
+                    <table id="student-notification-table" class="row-border table-notification-style">
+                        <thead>
+                            <tr>
+                                <th class="table-notification-style-th1">通知公告</th>
+                                <th class="table-notification-style-th2">发布时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="button" onclick="openWindow()" id="student-notification-detail" value="查看">
                 </div>
             </div>
         </div>
@@ -123,12 +179,23 @@ class StuSysStudent{
         this.$student_info_show.hide();
         this.$student_select_course = this.$student.find(".stu-sys-right-student-select-course");
         this.$student_select_course.hide();
+        this.$student_select_one_course = this.$student.find(".stu-sys-right-student-select-one-course");
+        this.$student_select_one_course.hide();
+        this.$student_show_grade = this.$student.find(".stu-sys-right-student-grade");
+        this.$student_show_grade.hide();
+        this.$student_show_notification = this.$student.find(".stu-sys-right-student-notification");
+        this.$student_show_notification.hide();
         //按钮
         this.$student_info = this.$student.find(".stu-sys-student-info");
+        this.$student_notification = this.$student.find(".stu-sys-student-notification");
         this.$student_course = this.$student.find(".stu-sys-student-course-select");
+        this.$student_plan = this.$student.find(".stu-sys-student-plan");
+        this.$student_grade = this.$student.find(".stu-sys-student-grade");
         this.$student_logout = this.$student.find(".stu-sys-student-logout");
         this.$student_info_form_submit = this.$student.find(".student-info-form-submit");
         this.$student_info_form_show_submit = this.$student.find(".student-info-form-show-submit");
+        this.$student_select_course_table_add = this.$student.find(".student-select-course-table-add");
+        this.$student_add_course_submit = this.$student.find(".student-add-course-table-button");
         //文本信息
         this.$student_info_name = this.$student.find(".student-info-input-name");
         this.$student_info_sex = this.$student.find(".student-info-input-sex");
@@ -160,6 +227,64 @@ class StuSysStudent{
             } );
         });
 
+        $(document).ready(function() {
+            $('#student-select-one-course-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/student/show_selectable_course/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "tname"},
+                    {"data": "period"},
+                    {"data": "credit"},
+                    {"data": "open_class"}
+                ],
+            } );
+        });
+
+        $(document).ready(function() {
+            $('#student-grade-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/student/show_grade/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "grade"},
+                ],
+            } );
+        });
+
+        $(document).ready(function(){
+            $('#student-notification-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/notification/get_notification/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                "columns": [
+                    {"data": "title"},
+                    {"data": "create_time"},
+                ],
+                language: {
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+                /* scrollY: 150 */
+            });
+        });
 
         this.get_foot_date();
 
@@ -168,8 +293,26 @@ class StuSysStudent{
 
     add_listening_events(){
         this.add_listening_events_student_info();
+        this.add_listening_events_notification();
         this.add_listening_events_course();
+        this.add_listening_events_grade();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_notification() {
+        let outer = this;
+        this.$student_notification.click(function(){
+            outer.hide_all();
+            outer.$student_show_notification.show();
+        });
+    }
+
+    add_listening_events_grade(){
+        let outer = this;
+        this.$student_grade.click(function(){
+            outer.hide_all();
+            outer.$student_show_grade.show();
+        });
     }
 
     add_listening_events_course(){
@@ -177,6 +320,40 @@ class StuSysStudent{
         this.$student_course.click(function(){
             outer.hide_all();
             outer.$student_select_course.show();
+        });
+
+        this.$student_select_course_table_add.click(function(){
+            outer.hide_all();
+            outer.$student_select_one_course.show();
+        });
+
+        this.$student_add_course_submit.click(function(){
+            let table = $('#student-select-one-course-table').DataTable();
+            let name = table.rows({selected: true}).data()[0]['name'];
+            let tname = table.rows({selected: true}).data()[0]['tname'];
+            let period = table.rows({selected: true}).data()[0]['period'];
+            let credit = table.rows({selected: true}).data()[0]['credit'];
+            let open_class = table.rows({selected: true}).data()[0]['open_class'];
+
+            $.ajax({
+                url: "http://43.138.22.107:8080/stu_sys/student/save_course/",
+                type: "GET",
+                data: {
+                    'name': name,
+                    'tname': tname,
+                    'period': period,
+                    'credit': credit,
+                    'open_class': open_class,
+                },
+                success: function(resp) {
+                    if(resp.result === "success"){
+                        confirm("选课成功!");
+                        location.reload();
+                    }else{
+                        confirm("选课失败！");
+                    }
+                }
+            });
         });
     }
 
@@ -300,6 +477,9 @@ class StuSysStudent{
         this.$student_info_show.hide();
         this.$student_info_form.hide();
         this.$student_select_course.hide();
+        this.$student_select_one_course.hide();
+        this.$student_show_grade.hide();
+        this.$student_show_notification.hide();
     }
 
     hide(){

@@ -802,3 +802,109 @@
     position: relative;
     top: 20%
 }
+
+.stu-sys-right-student-select-one-course {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-student-select-one-course-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-student-grade {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%; 
+}
+
+.stu-sys-right-student-grade-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    top: 10%;
+}
+
+.stu-sys-right-student-grade-addition{
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-student-grade-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-teacher-fill-grade {
+    width: 40%;
+    height: 56%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+
+.stu-sys-right-student-notification {
+    width: 99%;
+    height: 98%;
+    background-color: #FFFFFF;
+    position: relative;
+    top: 1%;
+    left: 0.5%;
+}
+
+.stu-sys-right-student-notification-title {
+    font-size: 4vh;
+    text-align: center;
+    position: relative;
+    top: 10%;
+}
+
+.stu-sys-right-student-notification-addition {
+    font-size: 2.5vh;
+    font-family: fangsong;
+    font-weight: bold;
+    position: relative;
+    top: 12%
+}
+
+.stu-sys-right-student-notification-table {
+    position: relative;
+    top: 20%
+}
+
+.stu-sys-right-notification-show {
+    width: 40%;
+    height: 56%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2.5%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #000;
+    text-align: center;
+    font-family: "微软雅黑";
+    color: #000;
+}
+

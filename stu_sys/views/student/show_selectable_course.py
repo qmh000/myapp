@@ -5,16 +5,17 @@ from stu_sys.models.tsu_user import Tsu_user
 from stu_sys.models.student import Student
 from stu_sys.models.select import Select
 
-def get_selected_course(request):
+def show_selectable_course(request):
     user = request.user
     tsu_user = Tsu_user.objects.get(user=user)
     stu = Student.objects.get(user=tsu_user)
     sc = Select.objects.filter(user=user)
+    courses = Course.objects.all()
     list = []
-    for obj in sc:
-        cid = obj.cid
-        cour = Course.objects.get(cid=cid)
-        if stu.minor_class == cour.open_class:
+    for cour in courses:
+        cid = cour.cid
+        exist = sc.filter(cid=cid)
+        if stu.minor_class == cour.open_class and not exist:
             tsu_user = Tsu_user.objects.get(user=cour.tuser)
             tname = Teacher.objects.get(user=tsu_user).name
             cour_info = {

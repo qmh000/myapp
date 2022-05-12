@@ -20,8 +20,8 @@ class StuSysTeacher{
                 <div class="stu-sys-navigation-item teacher-navigation-item-class">
                     班级管理
                 </div>
-                <div class="stu-sys-navigation-item">
-                    作业考试
+                <div class="stu-sys-navigation-item teacher-navigation-item-grade">
+                    提交成绩
                 </div>
                 <div class="stu-sys-navigation-item teacher-navigation-item-logout">
                     退出登录
@@ -106,6 +106,24 @@ class StuSysTeacher{
                     </table>
                 </div>
             </div>
+            <div class="stu-sys-right-teacher-fill-grade">
+                <form>
+                    <h3>提交成绩</h3>
+                    <div class="stu-sys-right-form-item">
+                        <label>学生学号:</label>
+                        <input type="text" class="teacher-grade-input-username" placeholder="请输入学生学号">
+                    </div>
+                    <div class="stu-sys-right-form-item">
+                        <label>课程名称:</label>
+                        <input type="text" class="teacher-grade-input-cname" placeholder="请输入课程名称">
+                    </div>
+                    <div class="stu-sys-right-form-item">
+                        <label>成绩:</label>
+                        <input type="text" class="teacher-grade-input-grade" placeholder="请输入学生成绩">
+                    </div>
+                    <span class="stu-sys-right-form-button stu-sys-right-teacher-grade-submit">提交</span>
+                </form>
+            </div>
         </div>
     </div>
     <div class="stu-sys-foot">
@@ -127,18 +145,24 @@ class StuSysTeacher{
         this.$teacher_class_manage.hide();
         this.$teacher_class_manage_table = this.$teacher.find(".stu-sys-right-teacher-class-manage-table");
         this.$teacher_class_manage_table.hide();
+        this.$teacher_grade_form = this.$teacher.find(".stu-sys-right-teacher-fill-grade");
+        this.$teacher_grade_form.hide();
         //按钮
         this.$teacher_info = this.$teacher.find(".teacher-navigation-item-info");
         this.$teacher_course = this.$teacher.find(".teacher-navigation-item-course");
         this.$teacher_class = this.$teacher.find(".teacher-navigation-item-class");
+        this.$teacher_grade = this.$teacher.find(".teacher-navigation-item-grade");
         this.$teacher_logout = this.$teacher.find(".teacher-navigation-item-logout");
         this.$teacher_info_form_submit = this.$teacher.find(".teacher-info-form-submit");
         this.$teacher_info_form_show_submit = this.$teacher.find(".teacher-info-form-show-submit");
         this.$teacher_class_manage_select_button = this.$teacher.find(".stu-sys-right-teacher-class-manage-select-button");
-
+        this.$teacher_grade_submit = this.$teacher.find(".stu-sys-right-teacher-grade-submit");
         //文本信息
         this.$teacher_info_name = this.$teacher.find(".teacher-info-input-name");
         this.$teacher_info_dept = this.$teacher.find(".teacher-info-input-dept");
+        this.$teacher_grade_username = this.$teacher.find(".teacher-grade-input-username");
+        this.$teacher_grade_cname = this.$teacher.find(".teacher-grade-input-cname");
+        this.$teacher_grade_grade = this.$teacher.find(".teacher-grade-input-grade");
         this.hide();
         this.start();
     }
@@ -216,7 +240,38 @@ class StuSysTeacher{
         this.add_listening_events_teacher_info();
         this.add_listening_events_teacher_course();
         this.add_listening_events_teacher_class();
+        this.add_listening_events_teacher_grade();
         this.add_listening_events_logout();
+    }
+
+    add_listening_events_teacher_grade(){
+        let outer = this;
+        this.$teacher_grade.click(function(){
+            outer.hide_all();
+            outer.$teacher_grade_form.show();
+        });
+
+        this.$teacher_grade_submit.click(function(){
+            let username = outer.$teacher_grade_username.val();
+            let cname = outer.$teacher_grade_cname.val();
+            let grade = outer.$teacher_grade_grade.val();
+            $.ajax({
+                url: "http://43.138.22.107:8080/stu_sys/teacher/save_grade/",
+                data: {
+                    username: username,
+                    cname: cname,
+                    grade: grade,
+                },
+                success: function(resp) {
+                    if (resp.result === "success"){
+                        confirm("提交成功!");
+                        location.reload();
+                    }else{
+                        confirm(resp.result);
+                    }
+                }
+            });
+        });
     }
 
     add_listening_events_teacher_class(){
@@ -226,7 +281,7 @@ class StuSysTeacher{
             outer.$teacher_class_manage.show();
         });
         this.$teacher_class_manage_select_button.click(function(){
-            
+
             outer.$teacher_class_manage_table.show();
         });
     }
@@ -357,5 +412,6 @@ class StuSysTeacher{
         this.$teacher_course_manage.hide();
         this.$teacher_class_manage.hide();
         this.$teacher_class_manage_table.hide();
+        this.$teacher_grade_form.hide();
     }
 }
