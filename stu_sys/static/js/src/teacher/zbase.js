@@ -6,7 +6,7 @@ class StuSysTeacher{
 <div class="stu-sys-teacher">
     <div class="stu-sys-head">
         <div class="stu-sys-head-logo"></div>
-        <div class="stu-sys-head-welcome"></div>
+        <div id="stu-sys-teacher-head-welcome"></div>
     </div>
     <div class="stu-sys-content">
         <div class="stu-sys-left">
@@ -62,7 +62,7 @@ class StuSysTeacher{
                 <div class="stu-sys-right-teacher-course-manage-title">讲授管理</div>
                 <div class="stu-sys-right-teacher-course-manage-addition">您可以在此页面查询您所讲授的课程</div>
                 <div class="stu-sys-right-teacher-course-manage-table">
-                    <table style="width: 100% !important;" id="teacher-course-manage-table" class="row-border">
+                    <table style="text-align: center;" id="teacher-course-manage-table" class="row-border my-table-style">
                         <thead>
                             <tr>
                                 <th>课程名称</th>
@@ -90,7 +90,7 @@ class StuSysTeacher{
                     <input type="button" value="检索" class="stu-sys-right-teacher-class-manage-select-button">
                 </div>
                 <div class="stu-sys-right-teacher-class-manage-table">
-                    <table style="width: 100% !important;" id="teacher-class-manage-table" class="display">
+                    <table style="text-align: center;" id="teacher-class-manage-table" class="display my-table-style">
                         <thead>
                             <tr>
                                 <th>学生姓名</th>
@@ -395,6 +395,13 @@ class StuSysTeacher{
     }
 
     get_head_name(){
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/account/getname/",
+            type: "GET",
+            success: function(resp) {
+                document.getElementById("stu-sys-teacher-head-welcome").innerHTML = "欢迎您 "+resp.name;
+            },
+        });
     }
 
     show(){

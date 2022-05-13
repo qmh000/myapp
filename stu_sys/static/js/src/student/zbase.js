@@ -6,7 +6,7 @@ class StuSysStudent{
 <div class="stu-sys-student">
     <div class="stu-sys-head">
         <div class="stu-sys-head-logo"></div>
-        <div class="stu-sys-head-welcome"></div>
+        <div id="stu-sys-student-head-welcome"></div>
     </div>
     <div class="stu-sys-content">
         <div class="stu-sys-left">
@@ -93,7 +93,7 @@ class StuSysStudent{
                 <div class="stu-sys-right-student-select-course-title">已选课程</div>
                 <div class="stu-sys-right-student-select-course-addition">您可以在此页面查看已选课程，选课</div>
                 <div class="stu-sys-right-student-select-course-table">
-                    <table style="width: 100% !important" id="student-select-course-table" class="row-border">
+                    <table style="text-align: center;" id="student-select-course-table" class="row-border my-table-style">
                         <thead>
                             <tr>
                                 <th>课程名称</th>
@@ -113,7 +113,7 @@ class StuSysStudent{
                 <div class="stu-sys-right-student-select-course-title">可选课程</div>
                 <div class="stu-sys-right-student-select-course-addition">请选择一门课</div>
                 <div class="stu-sys-right-student-select-one-course-table">
-                    <table style="width: 100% !important" id="student-select-one-course-table" class="row-border">
+                    <table style="text-align: center;" id="student-select-one-course-table" class="row-border my-table-style">
                         <thead>
                             <tr>
                                 <th>课程名称</th>
@@ -133,11 +133,11 @@ class StuSysStudent{
                 <div class="stu-sys-right-student-grade-title">考试成绩</div>
                 <div class="stu-sys-right-student-grade-addition">您可以在此页面查看考试成绩</div>
                 <div class="stu-sys-right-student-grade-table">
-                    <table style="width: 100% !important" id="student-grade-table" class="row-border">
+                    <table id="student-grade-table" class="row-border my-table-style">
                         <thead>
                             <tr>
-                                <th>课程名称</th>
-                                <th>成绩</th>
+                                <th class="my-table-style-th1">课程名称</th>
+                                <th class="my-table-style-th2">成绩</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,11 +149,11 @@ class StuSysStudent{
                 <div class="stu-sys-right-student-notification-title">通知公告</div>
                 <div class="stu-sys-right-student-notification-addition">您可以在此页查看有关通知</div>
                 <div class="stu-sys-right-student-notification-table">
-                    <table id="student-notification-table" class="row-border table-notification-style">
+                    <table id="student-notification-table" class="row-border my-table-style">
                         <thead>
                             <tr>
-                                <th class="table-notification-style-th1">通知公告</th>
-                                <th class="table-notification-style-th2">发布时间</th>
+                                <th class="my-table-style-th1">通知公告</th>
+                                <th class="my-table-style-th2">发布时间</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -223,7 +223,6 @@ class StuSysStudent{
 
     start(){
         try{
-            
             $(document).ready(function() {
                 $('#student-select-course-table').DataTable({
                     select: 'single',
@@ -239,6 +238,16 @@ class StuSysStudent{
                         {"data": "credit"},
                         {"data": "open_class"}
                     ],
+                    language: {
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
                 } );
             });
 
@@ -257,6 +266,16 @@ class StuSysStudent{
                         {"data": "credit"},
                         {"data": "open_class"}
                     ],
+                    language: {
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
                 } );
             });
 
@@ -272,6 +291,16 @@ class StuSysStudent{
                         {"data": "name"},
                         {"data": "grade"},
                     ],
+                    language: {
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
                 } );
             });
 
@@ -306,6 +335,7 @@ class StuSysStudent{
         }
         finally{
             this.get_foot_date();
+            this.get_head_name();
             this.add_listening_events();
         }
     }
@@ -325,26 +355,32 @@ class StuSysStudent{
             outer.$student_show_notification.show();
         });
         this.$student_notification_detail.click(function(){
-            outer.hide_all();
-            outer.$student_show_notification_detail.show();
             let table = $('#student-notification-table').DataTable();
-            let title = table.rows({selected: true}).data()[0]['title'];
-            console.log(title);
-            $.ajax({
-                url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
-                type: "GET",
-                data: {
-                    title: title
-                },
-                success: function(resp) {
-                    console.log(resp);
-                    document.getElementById("student-notification-detail-title").innerHTML = resp.title;
-                    document.getElementById("student-notification-detail-text").innerHTML = resp.result;
-                }
-            });
+            try{
+                let title = table.rows({selected: true}).data()[0]['title'];
+                $.ajax({
+                    url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
+                    type: "GET",
+                    data: {
+                        title: title
+                    },
+                    success: function(resp) {
+                        if(resp.result === "success"){
+                            document.getElementById("student-notification-detail-title").innerHTML = resp.title;
+                            document.getElementById("student-notification-detail-text").innerHTML = resp.detail;
+                        }else{
+                            confirm(resp.result);
+                        }
+                    }
+                });
+                outer.hide_all();
+                outer.$student_show_notification_detail.show();
+            }
+            catch(err){
+                confirm("请选择一个通知！");
+            }
         });
         this.$student_notification_return_button.click(function(){
-            location.reload();
             outer.hide_all();
             outer.$student_show_notification.show();
         });
@@ -511,6 +547,17 @@ class StuSysStudent{
     get_foot_date(){
         document.getElementById("stu-sys-student-foot-date").innerHTML = (new Date()).format1st("yyyyMd");
     }
+
+    get_head_name(){
+        $.ajax({
+            url: "http://43.138.22.107:8080/stu_sys/account/getname/",
+            type: "GET",
+            success: function(resp) {
+                document.getElementById("stu-sys-student-head-welcome").innerHTML = "欢迎您 "+resp.name;
+            },
+        });
+    }
+
     show(){
         this.$student.show();
     }

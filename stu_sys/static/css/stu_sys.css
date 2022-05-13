@@ -39,13 +39,14 @@
 }
 
 .stu-sys-account-graph {
-    height: 70vh;
-    width: 50vw;
+    height: 50vh;
+    width: 36vw;
     background-image: url("/static/image/account/graph.jpg");
     background-repeat: no-repeat;
+    background-size: 100% 100%;
     position:relative;
-    top: 50%;
-    left: 70%;
+    top: 40%;
+    left: 65%;
     transform: translate(-50%, -50%);
 }
 
@@ -179,13 +180,24 @@
     background-size: 44% 96%;
     float: left;
 } 
-.stu-sys-head-welcome {
+#stu-sys-teacher-head-welcome {
     position: relative;
     right: 9vw;
     top: 2.5vh;
     font-family: SimHei;
     font-weight: bold;
     float: right;
+    color: darkslategray;
+}
+
+#stu-sys-student-head-welcome {
+    position: relative;
+    right: 9vw;
+    top: 2.5vh;
+    font-family: SimHei;
+    font-weight: bold;
+    float: right;
+    color: darkslategray;
 }
 
 .stu-sys-content {
@@ -284,7 +296,7 @@
     font-style: italic;
     padding: 2vh;
     text-align: center;
-    line-height: 30px;
+    line-height: 4vh;
     background-color: rgba(125,185,222,0.6);
     border-radius: 10px;
     letter-spacing: 0.5vw;
@@ -311,21 +323,22 @@
     height: 12vh;
     background-image: url("/static/image/admin/textgraph.png");
     background-repeat: no-repeat;
+    background-size: 100% 100%;
     position: relative;
-    left: 20%;
+    left: 12%;
     top: 20%;
 }
 
-.table-notification-style {
+.my-table-style {
     width: 100% !important
 }
 
-.table-notification-style-th1 {
+.my-table-style-th1 {
     width: 70% !important;
     text-align: left;
 }
 
-.table-notification-style-th2 {
+.my-table-style-th2 {
     width: 30% !important;
     text-align: left;
 }

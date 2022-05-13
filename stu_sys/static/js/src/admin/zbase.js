@@ -36,11 +36,11 @@ class StuSysAdmin{
                 <div class="stu-sys-right-admin-notification-title">通知公告</div>
                 <div class="stu-sys-right-admin-notification-addition">您可以在此页发布有关通知</div>
                 <div class="stu-sys-right-admin-notification-table">
-                    <table id="admin-notification-table" class="row-border table-notification-style">
+                    <table id="admin-notification-table" class="row-border my-table-style">
                         <thead>
                             <tr>
-                                <th class="table-notification-style-th1">通知公告</th>
-                                <th class="table-notification-style-th2">发布时间</th>
+                                <th class="my-table-style-th1">通知公告</th>
+                                <th class="my-table-style-th2">发布时间</th>
                             </tr>
                         </thead>
                     </table>
@@ -102,7 +102,7 @@ class StuSysAdmin{
                     <input type="button" value="检索" class="stu-sys-right-admin-student-manage-search-button">
                 </div>
                 <div class="stu-sys-right-admin-student-manage-table">
-                    <table id="admin-student-manage-table" class="display">
+                    <table id="admin-student-manage-table" class="display my-table-style">
                         <thead>
                             <tr>
                                 <th>学生姓名</th>
@@ -149,7 +149,7 @@ class StuSysAdmin{
                 <div class="stu-sys-right-admin-course-manage-title">课程管理</div>
                 <div class="stu-sys-right-admin-course-manage-addition">您可以在此页面查询课程，添加课程，删除课程</div>
                 <div class="stu-sys-right-admin-course-manage-table">
-                    <table id="admin-course-manage-table" class="row-border">
+                    <table style="text-align: center;" id="admin-course-manage-table" class="row-border my-table-style">
                         <thead>
                             <tr>
                                 <th>课程名称</th>
@@ -205,7 +205,7 @@ class StuSysAdmin{
                     <input type="button" value="检索" class="stu-sys-right-admin-teacher-manage-search-button">
                 </div>
                 <div class="stu-sys-right-admin-teacher-manage-table">
-                    <table id="admin-teacher-manage-table" class="display">
+                    <table style="text-align: center;" id="admin-teacher-manage-table" class="display my-table-style">
                         <thead>
                             <tr>
                                 <th>教师姓名</th>
@@ -325,8 +325,86 @@ class StuSysAdmin{
                     infoEmpty:'没有数据',
                     infoFiltered:"(从_MAX_条数据检索)",
                 },
-                /* scrollY: 150 */
             });
+        });
+        $(document).ready(function(){
+            $('#admin-teacher-manage-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
+                    type: "GET",
+                    dataType: 'json',
+                    data: {
+                        'dept': $("#admin-teacher-manage-select-dept").val(),
+                    },
+                },
+                "columns": [
+                    {"data": "name"},
+                    {"data": "dept"},
+                ],
+                language: {
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+            });
+        });
+
+        $(document).ready(function(){
+            $('#admin-course-manage-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/course/get_course/",
+                    type: "GET",
+                    dataType: 'json',
+                },
+                "columns": [
+                    {"data": "name"},
+                    {"data": "tname"},
+                    {"data": "period"},
+                    {"data": "credit"},
+                    {"data": "open_class"},
+                ],
+                language:{
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+            });
+        });
+
+        $(document).ready(function() {
+            $('#admin-student-manage-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_search_info/",
+                    type: "GET",
+                    dataType: 'json',
+                    data: {
+                        'minor': $("#admin-student-manage-select-minior").val(),
+                        'class': $("#admin-student-manage-select-class").val(),
+                        'dept': $("#admin-student-manage-select-dept").val(),
+                    },
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "sex"},
+                    {"data": "age"},
+                    {"data": "dept"},
+                    {"data": "minor_subject"},
+                    {"data": "minor_class"},
+                ],
+            } );
         });
 
         this.get_foot_date();
@@ -352,34 +430,6 @@ class StuSysAdmin{
         });
         this.$admin_teacher_manage_search_button.click(function(){
             outer.$stu_sys_right_admin_teacher_manage_table.show();
-            $(document).ready(function(){
-                $('#admin-teacher-manage-table').DataTable({
-                    select: 'single',
-                    ajax: {
-                        url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
-                        type: "GET",
-                        dataType: 'json',
-                        data: {
-                            'dept': $("#admin-teacher-manage-select-dept").val(),
-                        },
-                    },
-                    "columns": [
-                        {"data": "name"},
-                        {"data": "dept"},
-                    ],
-                    language: {
-                        zeroRecords:'抱歉,没有检索到数据',
-                        search:'检索',  // 将英文search改为中文
-                        searchPlaceholder:'请输入',//搜索框提示功能
-                        lengthMenu:'每页显示_MENU_条记录',
-                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                        infoEmpty:'没有数据',
-                        infoFiltered:"(从_MAX_条数据检索)",
-                    },
-                    /* scrollY: 150 */
-                });
-            });
         });
         this.$admin_teacher_manage_modify_button.click(function(){
             let table = $('#admin-teacher-manage-table').DataTable();
@@ -390,7 +440,7 @@ class StuSysAdmin{
         });
         this.$teacher_info_submit.click(function(){
             let table = $('#admin-teacher-manage-table').DataTable();
-            let name = table.rows({selected: true}).data()[0]['name'];
+            let name = table.rows({selected: true}).data()[1]['name'];
             let dept = outer.$admin_teacher_info_modify_dept.val();
             $.ajax({
                 url: "http://43.138.22.107:8080/stu_sys/adminn/modify_teacher_info/",
@@ -417,34 +467,6 @@ class StuSysAdmin{
         this.$navigation_item_course.click(function(){
             outer.hide_all();
             outer.$stu_sys_right_admin_course_manage.show();
-            $(document).ready(function(){
-                $('#admin-course-manage-table').DataTable({
-                    select: 'single',
-                    ajax: {
-                        url: "http://43.138.22.107:8080/stu_sys/course/get_course/",
-                        type: "GET",
-                        dataType: 'json',
-                    },
-                    "columns": [
-                        {"data": "name"},
-                        {"data": "tname"},
-                        {"data": "period"},
-                        {"data": "credit"},
-                        {"data": "open_class"},
-                    ],
-                    language:{
-                        zeroRecords:'抱歉,没有检索到数据',
-                        search:'检索',  // 将英文search改为中文
-                        searchPlaceholder:'请输入',//搜索框提示功能
-                        lengthMenu:'每页显示_MENU_条记录',
-                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                        infoEmpty:'没有数据',
-                        infoFiltered:"(从_MAX_条数据检索)",
-                    },
-                    /* scrollY: 150 */
-                });
-            });
         });
         this.$course_info_button_add.click(function(){
             outer.hide_all();
@@ -558,30 +580,6 @@ class StuSysAdmin{
 
     admin_show_student_search_info() {
         this.$stu_sys_right_admin_student_manage_table.show();
-        $(document).ready(function() {
-            $('#admin-student-manage-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_search_info/",
-                    type: "GET",
-                    dataType: 'json',
-                    data: {
-                        'minor': $("#admin-student-manage-select-minior").val(),
-                        'class': $("#admin-student-manage-select-class").val(),
-                        'dept': $("#admin-student-manage-select-dept").val(),
-                    },
-                },
-                'columns': [
-                    {"data": "name"},
-                    {"data": "sex"},
-                    {"data": "age"},
-                    {"data": "dept"},
-                    {"data": "minor_subject"},
-                    {"data": "minor_class"},
-                ],
-                scrollY: 150,
-            } );
-        });
     }
 
     add_listening_events_logout(){
@@ -600,8 +598,6 @@ class StuSysAdmin{
         });
 
         this.$admin_notification_detail.click(function(){
-            outer.hide_all();
-            outer.$stu_sys_right_admin_notification_show.show();
             outer.check_notification_detail();
         });
 
@@ -615,7 +611,7 @@ class StuSysAdmin{
             outer.add_notification_to_remote();
         });
         this.$admin_notification_return_button.click(function(){
-            location.reload();
+            /*location.reload();*/
             outer.hide_all();
             outer.$stu_sys_right_admin_notification.show();
         });
@@ -653,20 +649,30 @@ class StuSysAdmin{
     check_notification_detail(){
         let outer = this;
         let table = $('#admin-notification-table').DataTable();
-        let title = table.rows({selected: true}).data()[0]['title'];
-        console.log(title);
-        $.ajax({
-            url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
-            type: "GET",
-            data: {
-                title: title
-            },
-            success: function(resp) {
-                console.log(resp);
-                document.getElementById("admin-notification-detail-title").innerHTML = resp.title;
-                document.getElementById("admin-notification-detail-text").innerHTML = resp.result;
-            }
-        });
+        try{
+            let title = table.rows({selected: true}).data()[0]['title'];
+            $.ajax({
+                url: "http://43.138.22.107:8080/stu_sys/notification/select_notification",
+                type: "GET",
+                data: {
+                    title: title
+                },
+                success: function(resp) {
+                    if(resp.result === "success"){
+                        document.getElementById("admin-notification-detail-title").innerHTML = resp.title;
+                        document.getElementById("admin-notification-detail-text").innerHTML = resp.detail;
+                    }else{
+                        confirm(resp.result);
+                    }
+                }
+            });
+            outer.hide_all();
+            outer.$stu_sys_right_admin_notification_show.show();
+        }
+        catch(err){
+            confirm("请选择一个通知！");
+
+        }
 
     }
 

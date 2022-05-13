@@ -12,6 +12,7 @@ def select_notification(request):
             'result': "请选择一个通知"
         })
     return JsonResponse({
-        'result': obj[0].detail,
+        'result': "success",
+        'detail': obj[0].detail,
         'title': obj[0].title,
     })
