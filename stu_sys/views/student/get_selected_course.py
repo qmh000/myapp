@@ -11,20 +11,27 @@ def get_selected_course(request):
     if user.is_authenticated:
         tsu_user = Tsu_user.objects.get(user=user)
         identity = tsu_user.identity
-    if not user.is_authenticated or identity != "学生":
+    else:
         obj_dic = {}
         list = []
         obj_dic['data'] = list
         return JsonResponse(obj_dic)
 
     tsu_user = Tsu_user.objects.get(user=user)
-    stu = Student.objects.get(user=tsu_user)
+    stu = Student.objects.filter(user=tsu_user)
     sc = Select.objects.filter(user=user)
+
+    if identity != "学生" or not stu:
+        obj_dic = {}
+        list = []
+        obj_dic['data'] = list
+        return JsonResponse(obj_dic)
+
     list = []
     for obj in sc:
         cid = obj.cid
         cour = Course.objects.get(cid=cid)
-        if stu.minor_class == cour.open_class:
+        if stu[0].minor_class == cour.open_class:
             tsu_user = Tsu_user.objects.get(user=cour.tuser)
             tname = Teacher.objects.get(user=tsu_user).name
             cour_info = {
