@@ -21,7 +21,7 @@ class StuSysAccount{
             </div>
             <div class="stu-sys-account-username">
                 <div class="stu-sys-account-item">
-                    <input type="text" placeholder="用户名">
+                    <input type="text" placeholder="学号/工号">
                 </div>
             </div>
             <div class="stu-sys-account-password">
@@ -46,7 +46,7 @@ class StuSysAccount{
             </div>
             <div class="stu-sys-account-username">
                 <div class="stu-sys-account-item">
-                    <input type="text" placeholder="用户名">
+                    <input type="text" placeholder="学号/工号">
                 </div>
             </div>
             <div class="stu-sys-account-password">
@@ -60,7 +60,6 @@ class StuSysAccount{
                 </div>
             </div>
             <div class="stu-sys-account-identity">
-                <input type="radio" name="identity" value="管理员">管理员
                 <input type="radio" name="identity" value="老师">老师
                 <input type="radio" name="identity" value="学生">学生
             </div>

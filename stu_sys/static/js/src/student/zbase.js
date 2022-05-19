@@ -127,6 +127,7 @@ class StuSysStudent{
                         </tbody>
                     </table>
                     <input type="button" class="student-add-course-table-button" value="提交">
+                    <input type="button" class="student-add-course-return-button" value="返回">
                 </div>
             </div>
             <div class="stu-sys-right-student-grade">
@@ -166,7 +167,7 @@ class StuSysStudent{
                 <form>
                     <h3 id="student-notification-detail-title"></h3>
                     <div class="stu-sys-right-form-item">
-                        <label id="student-notification-detail-text"></label>
+                        <textarea rows="15" id="student-notification-detail-text"></textarea>
                     </div>
                     <span class="stu-sys-right-form-button student-notification-return-button">返回</span>
                 </form>
@@ -209,6 +210,7 @@ class StuSysStudent{
         this.$student_add_course_submit = this.$student.find(".student-add-course-table-button");
         this.$student_notification_detail = this.$student.find(".student-notification-detail");
         this.$student_notification_return_button = this.$student.find(".student-notification-return-button");
+        this.$student_add_course_return = this.$student.find(".student-add-course-return-button");
         //文本信息
         this.$student_info_name = this.$student.find(".student-info-input-name");
         this.$student_info_sex = this.$student.find(".student-info-input-sex");
@@ -326,7 +328,6 @@ class StuSysStudent{
                         infoEmpty:'没有数据',
                         infoFiltered:"(从_MAX_条数据检索)",
                     },
-                    /* scrollY: 150 */
                 });
             });
         }
@@ -433,6 +434,10 @@ class StuSysStudent{
                     }
                 }
             });
+        });
+        this.$student_add_course_return.click(function(){
+            outer.hide_all();
+            outer.$student_select_course.show();
         });
     }
 

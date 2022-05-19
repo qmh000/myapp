@@ -13,3 +13,5 @@ def checkinfo(request):
     return JsonResponse({
         'result': "success"
     })
+
+

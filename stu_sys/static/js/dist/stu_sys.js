@@ -21,7 +21,7 @@ class StuSysAccount{
             </div>
             <div class="stu-sys-account-username">
                 <div class="stu-sys-account-item">
-                    <input type="text" placeholder="用户名">
+                    <input type="text" placeholder="学号/工号">
                 </div>
             </div>
             <div class="stu-sys-account-password">
@@ -46,7 +46,7 @@ class StuSysAccount{
             </div>
             <div class="stu-sys-account-username">
                 <div class="stu-sys-account-item">
-                    <input type="text" placeholder="用户名">
+                    <input type="text" placeholder="学号/工号">
                 </div>
             </div>
             <div class="stu-sys-account-password">
@@ -60,7 +60,6 @@ class StuSysAccount{
                 </div>
             </div>
             <div class="stu-sys-account-identity">
-                <input type="radio" name="identity" value="管理员">管理员
                 <input type="radio" name="identity" value="老师">老师
                 <input type="radio" name="identity" value="学生">学生
             </div>
@@ -298,7 +297,7 @@ class StuSysAdmin{
                 <form>
                     <h3 id="admin-notification-detail-title"></h3>
                     <div class="stu-sys-right-form-item">
-                        <label id="admin-notification-detail-text"></label>
+                        <textarea rows="15" id="admin-notification-detail-text"></textarea>
                     </div>
                     <span class="stu-sys-right-form-button admin-notification-return-button">返回</span>
                 </form>
@@ -388,6 +387,7 @@ class StuSysAdmin{
                         <input type="text" class="admin-student-info-modify-class" placeholder="请输入辅修班级">
                     </div>
                     <span class="stu-sys-right-form-button admin-student-info-modify-submit">提交</span>
+                    <span class="stu-sys-right-form-button admin-student-info-return-button">返回</span>
                 </form>
             </div>
             <div class="stu-sys-right-admin-course-manage">
@@ -435,6 +435,7 @@ class StuSysAdmin{
                         <input type="text" class="course-info-input-open-class" placeholder="请输入开课班级">
                     </div>
                     <span class="stu-sys-right-form-button stu-sys-right-admin-course-info-add-submit">提交</span>
+                    <span class="stu-sys-right-form-button admin-course-info-return-button">返回</span>
                 </form>
             </div>
             <div class="stu-sys-right-admin-teacher-manage">
@@ -474,6 +475,7 @@ class StuSysAdmin{
                         <input type="text" class="admin-teacher-info-modify-dept" placeholder="请输入您所属的院系">
                     </div>
                     <span class="stu-sys-right-form-button stu-sys-right-admin-teacher-manage-modify-submit">提交</span>
+                    <span class="stu-sys-right-form-button admin-teacher-manage-return-button">返回</span>
                 </form>
             </div>
         </div>
@@ -519,6 +521,9 @@ class StuSysAdmin{
         this.$admin_notification_add = this.$admin.find(".admin-notification-add");
         this.$admin_notification_detail = this.$admin.find(".admin-notification-detail");
         this.$admin_notification_return_button = this.$admin.find(".admin-notification-return-button");
+        this.$admin_student_info_return_button = this.$admin.find(".admin-student-info-return-button");
+        this.$admin_teacher_manage_return_button = this.$admin.find(".admin-teacher-manage-return-button");
+        this.$admin_course_info_return_button = this.$admin.find(".admin-course-info-return-button");
         this.$admin_notification_delete = this.$admin.find(".admin-notification-delete");
         this.$notification_submit = this.$admin.find(".stu-sys-right-admin-notification-form-button");
         this.$admin_student_manage_search_button = this.$admin.find(".stu-sys-right-admin-student-manage-search-button");
@@ -572,33 +577,6 @@ class StuSysAdmin{
                 },
             });
         });
-        $(document).ready(function(){
-            $('#admin-teacher-manage-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
-                    type: "GET",
-                    dataType: 'json',
-                    data: {
-                        'dept': $("#admin-teacher-manage-select-dept").val(),
-                    },
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "dept"},
-                ],
-                language: {
-                    zeroRecords:'抱歉,没有检索到数据',
-                    search:'检索',  // 将英文search改为中文
-                    searchPlaceholder:'请输入',//搜索框提示功能
-                    lengthMenu:'每页显示_MENU_条记录',
-                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                    infoEmpty:'没有数据',
-                    infoFiltered:"(从_MAX_条数据检索)",
-                },
-            });
-        });
 
         $(document).ready(function(){
             $('#admin-course-manage-table').DataTable({
@@ -628,29 +606,6 @@ class StuSysAdmin{
             });
         });
 
-        $(document).ready(function() {
-            $('#admin-student-manage-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_search_info/",
-                    type: "GET",
-                    dataType: 'json',
-                    data: {
-                        'minor': $("#admin-student-manage-select-minior").val(),
-                        'class': $("#admin-student-manage-select-class").val(),
-                        'dept': $("#admin-student-manage-select-dept").val(),
-                    },
-                },
-                'columns': [
-                    {"data": "name"},
-                    {"data": "sex"},
-                    {"data": "age"},
-                    {"data": "dept"},
-                    {"data": "minor_subject"},
-                    {"data": "minor_class"},
-                ],
-            } );
-        });
 
         this.get_foot_date();
         this.get_head_name();
@@ -674,6 +629,34 @@ class StuSysAdmin{
             outer.$stu_sys_right_admin_teacher_manage.show();
         });
         this.$admin_teacher_manage_search_button.click(function(){
+            $(document).ready(function(){
+                $('#admin-teacher-manage-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/adminn/get_teacher_info/",
+                        type: "GET",
+                        dataType: 'json',
+                        data: {
+                            'dept': $("#admin-teacher-manage-select-dept").val(),
+                        },
+                    },
+                    "columns": [
+                        {"data": "name"},
+                        {"data": "dept"},
+                    ],
+                    language: {
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    destroy:true
+                });
+            });
             outer.$stu_sys_right_admin_teacher_manage_table.show();
         });
         this.$admin_teacher_manage_modify_button.click(function(){
@@ -703,6 +686,11 @@ class StuSysAdmin{
                     }
                 }
             });
+        });
+        this.$admin_teacher_manage_return_button.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_teacher_manage.show();
+            outer.$stu_sys_right_admin_teacher_manage_table.show();
         });
     }
 
@@ -762,6 +750,10 @@ class StuSysAdmin{
                 }
             });
         });
+        this.$admin_course_info_return_button.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_course_manage.show();
+        });
     }
 
     add_listening_events_student() {
@@ -778,6 +770,11 @@ class StuSysAdmin{
         });
         this.$student_info_submit.click(function(){
             outer.admin_modify_student_info_inremote();
+        });
+        this.$admin_student_info_return_button.click(function(){
+            outer.hide_all();
+            outer.$stu_sys_right_admin_student_manage_table.show();
+            outer.$stu_sys_right_admin_student_manage.show();
         });
     }
 
@@ -824,6 +821,40 @@ class StuSysAdmin{
     }
 
     admin_show_student_search_info() {
+        $(document).ready(function() {
+            $('#admin-student-manage-table').DataTable({
+                select: 'single',
+                ajax: {
+                    url: "http://43.138.22.107:8080/stu_sys/adminn/get_search_info/",
+                    type: "GET",
+                    dataType: 'json',
+                    data: {
+                        'minor': $("#admin-student-manage-select-minior").val(),
+                        'class': $("#admin-student-manage-select-class").val(),
+                        'dept': $("#admin-student-manage-select-dept").val(),
+                    },
+                },
+                'columns': [
+                    {"data": "name"},
+                    {"data": "sex"},
+                    {"data": "age"},
+                    {"data": "dept"},
+                    {"data": "minor_subject"},
+                    {"data": "minor_class"},
+                ],
+                language:{
+                    zeroRecords:'抱歉,没有检索到数据',
+                    search:'检索',  // 将英文search改为中文
+                    searchPlaceholder:'请输入',//搜索框提示功能
+                    lengthMenu:'每页显示_MENU_条记录',
+                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                    infoEmpty:'没有数据',
+                    infoFiltered:"(从_MAX_条数据检索)",
+                },
+                destroy:true
+            });
+        });
         this.$stu_sys_right_admin_student_manage_table.show();
     }
 
@@ -1104,6 +1135,7 @@ class StuSysStudent{
                         </tbody>
                     </table>
                     <input type="button" class="student-add-course-table-button" value="提交">
+                    <input type="button" class="student-add-course-return-button" value="返回">
                 </div>
             </div>
             <div class="stu-sys-right-student-grade">
@@ -1143,7 +1175,7 @@ class StuSysStudent{
                 <form>
                     <h3 id="student-notification-detail-title"></h3>
                     <div class="stu-sys-right-form-item">
-                        <label id="student-notification-detail-text"></label>
+                        <textarea rows="15" id="student-notification-detail-text"></textarea>
                     </div>
                     <span class="stu-sys-right-form-button student-notification-return-button">返回</span>
                 </form>
@@ -1186,6 +1218,7 @@ class StuSysStudent{
         this.$student_add_course_submit = this.$student.find(".student-add-course-table-button");
         this.$student_notification_detail = this.$student.find(".student-notification-detail");
         this.$student_notification_return_button = this.$student.find(".student-notification-return-button");
+        this.$student_add_course_return = this.$student.find(".student-add-course-return-button");
         //文本信息
         this.$student_info_name = this.$student.find(".student-info-input-name");
         this.$student_info_sex = this.$student.find(".student-info-input-sex");
@@ -1303,7 +1336,6 @@ class StuSysStudent{
                         infoEmpty:'没有数据',
                         infoFiltered:"(从_MAX_条数据检索)",
                     },
-                    /* scrollY: 150 */
                 });
             });
         }
@@ -1410,6 +1442,10 @@ class StuSysStudent{
                     }
                 }
             });
+        });
+        this.$student_add_course_return.click(function(){
+            outer.hide_all();
+            outer.$student_select_course.show();
         });
     }
 
@@ -1724,38 +1760,6 @@ class StuSysTeacher{
     }
 
     start(){
-        $(document).ready(function(){
-            $('#teacher-class-manage-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/teacher/get_class/",
-                    type: "GET",
-                    dataType: 'json',
-                    data: {
-                        'class': $("#teacher-class-manage-select-class").val(),
-                    },
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "sex"},
-                    {"data": "age"},
-                    {"data": "dept"},
-                    {"data": "minor_subject"},
-                    {"data": "minor_class"},
-                ],
-                language:{
-                    zeroRecords:'抱歉,没有检索到数据',
-                    search:'检索',  // 将英文search改为中文
-                    searchPlaceholder:'请输入',//搜索框提示功能
-                    lengthMenu:'每页显示_MENU_条记录',
-                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                    infoEmpty:'没有数据',
-                    infoFiltered:"(从_MAX_条数据检索)",
-                },
-                /* scrollY: 150  */
-            });
-        });
 
         $(document).ready(function(){
             $('#teacher-course-manage-table').DataTable({
@@ -1836,8 +1840,43 @@ class StuSysTeacher{
             outer.hide_all();
             outer.$teacher_class_manage.show();
         });
-        this.$teacher_class_manage_select_button.click(function(){
 
+        this.$teacher_class_manage_select_button.click(function(){
+            let minor_class = $("#teacher-class-manage-select-class").val();
+            console.log(minor_class);
+            $(document).ready(function(){
+                $('#teacher-class-manage-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/teacher/get_class/",
+                        type: "GET",
+                        //dataType: 'json',
+                        data: {
+                            'minor_class': minor_class,
+                        },
+                    },
+                    "columns": [
+                        {"data": "name"},
+                        {"data": "sex"},
+                        {"data": "age"},
+                        {"data": "dept"},
+                        {"data": "minor_subject"},
+                        {"data": "minor_class"},
+                    ],
+                    language:{
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    destroy:true
+                    /* scrollY: 150  */
+                });
+            });
             outer.$teacher_class_manage_table.show();
         });
     }
@@ -1883,7 +1922,9 @@ class StuSysTeacher{
             type: "GET",
             success: function(resp) {
                 if(resp.result === "success") {
-                    location.reload();
+                    //location.reload();
+                    outer.hide_all();
+                    outer.$teacher_info_form.show();
                 }else {
                     confirm("修改失败！");
                 }

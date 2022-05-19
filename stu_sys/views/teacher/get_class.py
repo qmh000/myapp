@@ -3,7 +3,7 @@ from stu_sys.models.student import Student
 
 def get_class(request):
     cond = request.GET
-    minor_class = cond.get("class")
+    minor_class = cond.get("minor_class")
 
     if minor_class == "所有班级":
         students = Student.objects.all()

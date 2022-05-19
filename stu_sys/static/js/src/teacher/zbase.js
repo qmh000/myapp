@@ -168,38 +168,6 @@ class StuSysTeacher{
     }
 
     start(){
-        $(document).ready(function(){
-            $('#teacher-class-manage-table').DataTable({
-                select: 'single',
-                ajax: {
-                    url: "http://43.138.22.107:8080/stu_sys/teacher/get_class/",
-                    type: "GET",
-                    dataType: 'json',
-                    data: {
-                        'class': $("#teacher-class-manage-select-class").val(),
-                    },
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "sex"},
-                    {"data": "age"},
-                    {"data": "dept"},
-                    {"data": "minor_subject"},
-                    {"data": "minor_class"},
-                ],
-                language:{
-                    zeroRecords:'抱歉,没有检索到数据',
-                    search:'检索',  // 将英文search改为中文
-                    searchPlaceholder:'请输入',//搜索框提示功能
-                    lengthMenu:'每页显示_MENU_条记录',
-                    info:'显示第_START_到第_END_条记录，共_TOTAL_条',
-                    paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
-                    infoEmpty:'没有数据',
-                    infoFiltered:"(从_MAX_条数据检索)",
-                },
-                /* scrollY: 150  */
-            });
-        });
 
         $(document).ready(function(){
             $('#teacher-course-manage-table').DataTable({
@@ -280,8 +248,43 @@ class StuSysTeacher{
             outer.hide_all();
             outer.$teacher_class_manage.show();
         });
-        this.$teacher_class_manage_select_button.click(function(){
 
+        this.$teacher_class_manage_select_button.click(function(){
+            let minor_class = $("#teacher-class-manage-select-class").val();
+            console.log(minor_class);
+            $(document).ready(function(){
+                $('#teacher-class-manage-table').DataTable({
+                    select: 'single',
+                    ajax: {
+                        url: "http://43.138.22.107:8080/stu_sys/teacher/get_class/",
+                        type: "GET",
+                        //dataType: 'json',
+                        data: {
+                            'minor_class': minor_class,
+                        },
+                    },
+                    "columns": [
+                        {"data": "name"},
+                        {"data": "sex"},
+                        {"data": "age"},
+                        {"data": "dept"},
+                        {"data": "minor_subject"},
+                        {"data": "minor_class"},
+                    ],
+                    language:{
+                        zeroRecords:'抱歉,没有检索到数据',
+                        search:'检索',  // 将英文search改为中文
+                        searchPlaceholder:'请输入',//搜索框提示功能
+                        lengthMenu:'每页显示_MENU_条记录',
+                        info:'显示第_START_到第_END_条记录，共_TOTAL_条',
+                        paginate:{'next':'下页','previous':'下页','first':'第一页','last':'最后一页'},
+                        infoEmpty:'没有数据',
+                        infoFiltered:"(从_MAX_条数据检索)",
+                    },
+                    destroy:true
+                    /* scrollY: 150  */
+                });
+            });
             outer.$teacher_class_manage_table.show();
         });
     }
@@ -327,7 +330,9 @@ class StuSysTeacher{
             type: "GET",
             success: function(resp) {
                 if(resp.result === "success") {
-                    location.reload();
+                    //location.reload();
+                    outer.hide_all();
+                    outer.$teacher_info_form.show();
                 }else {
                     confirm("修改失败！");
                 }
